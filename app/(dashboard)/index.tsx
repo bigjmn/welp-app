@@ -12,8 +12,10 @@ export default function Index() {
       <TileGrid />
       {/* <PrimaryButton name="increase" onPress={handlePress} />
       <ThemedText>{myCount}</ThemedText> */}
+      <Spacer /> 
       <Spacer height={60} />
       <PrimaryButton style={{width:"80%"}} name="Let's Go!" onPress={handlePress} />
+      
 
       
     </ThemedView>

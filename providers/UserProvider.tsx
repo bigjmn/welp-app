@@ -6,16 +6,49 @@ interface UserProps {
     location: Location.LocationObject | null;
     errorMsg: string | null;
     user: User | null;
+    logHistory: (resultName:string,review?:Review)=>void,
+    searchLocation: string | null,
+    handleSearchLocation:(sl:string)=>void 
 }
 const alphaNumber = "abcdefghijklmnopqrstuvwxyz123456789"
 
 const generateId = customAlphabet(alphaNumber, 6)
-export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null})
+export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:()=>{}, searchLocation:null,handleSearchLocation:()=>{} })
 
 export function UserLocationProvider({ children } : {children : React.ReactNode}){
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null)
+    const [searchLocation, setSearchLocation] = useState<string | null>(null);
+
+    const handleSearchLocation = (sl:string)=> {
+      setSearchLocation(sl)
+    }
+
+    const logHistory = async (resultName:string, review?: Review) => {
+      const timestamp = Date.now()
+      const historyItem:HistoryItem = {
+        timestamp,
+        name: resultName, 
+        review
+      }
+      try {
+        if (user){
+        const updatedUser:User = {...user, orderHistory: [...user.orderHistory, historyItem]}
+        await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+        setUser(updatedUser)
+        
+      } else {
+        throw Error("no user!")
+      }
+
+      } catch (e){
+        console.log(e)
+        
+      }
+      
+
+    }
 
      useEffect(() => {
         (async () => {
@@ -50,7 +83,7 @@ export function UserLocationProvider({ children } : {children : React.ReactNode}
       })
 
       return (
-        <UserContext.Provider value={{ location, errorMsg, user }}>
+        <UserContext.Provider value={{ location, errorMsg, user, logHistory, searchLocation,handleSearchLocation }}>
             { children }
         </UserContext.Provider>
       )

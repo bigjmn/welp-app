@@ -7,7 +7,7 @@ const endpointMap:Record<ServiceType,string> = {
     "Search": "https://api.yelp.com/v3/businesses/search?"
 }
 export const useWelpSearch = () => {
-    const apiKey = process.env.EXPO_PUBLIC_YELP_API
+    const apiKey = "Jp4bwEQIE2AE0Ja0HHXBbnjhrjMF7b0rVczcj1BVt2Iri4L1fLRzirLGicnyqbLPlfo0M4fsW9G7qq5SbnQNWr8V0XN46WuY_fhVLMRP2TfhUwsscFb1VFeDKa7CYXYx"
 
     const headers:Record<string, string> = {"accept": "application/json", "authorization": "Bearer "+apiKey};
     const getResults = async (serviceType:ServiceType, location:Location.LocationObject) => {

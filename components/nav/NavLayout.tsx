@@ -1,11 +1,9 @@
+import { useTheme } from "@/hooks/useTheme";
 import { usePathname, useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
-import { ThemedView } from "../ui";
-
-import { useTheme } from "@/hooks/useTheme";
-import { PrimaryButton } from "../ui";
+import AddressSearch from "../home/AddressSearch";
+import { PrimaryButton, ThemedView } from "../ui";
 import DarkModeToggle from "../ui/DarkModeToggle";
-
 export default function NavLayout(){
     const { colors } = useTheme()
     const router = useRouter()
@@ -17,8 +15,9 @@ export default function NavLayout(){
 
     return (
         <ThemedView style={styles.container}>
-            <ThemedView style={{flexDirection:'row'}}>
+            <ThemedView style={{flexDirection:'row',overflow:'visible',zIndex:4}}>
                 <PrimaryButton name="Welp" onPress={handlePress} />
+                <AddressSearch handlePickMade={()=>{}} />
             </ThemedView>
             <DarkModeToggle />
         </ThemedView>
@@ -28,7 +27,9 @@ export default function NavLayout(){
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
+        position:'relative',
         width: "100%",
+        overflow:'visible',
         alignItems: "center",
         justifyContent:"space-between",
         padding: 16

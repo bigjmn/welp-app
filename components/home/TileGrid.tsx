@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { ThemedView } from "../ui";
+import { Spacer, ThemedTextInput, ThemedView } from "../ui";
 
 import { ServiceTile } from "./ServiceTile";
 const SERVICES:ServiceType[] = ["Delivery", "Restaurant", "Bar", "Search"]
 export function TileGrid(){
     const [serviceType, setServiceType] = useState<ServiceType>("Delivery")
+    const [searchInput, setSearchInput] = useState<string>("")
 
     return (
         <ThemedView style={styles.container}>
+        <ThemedView style={styles.tilegrid}>
             {SERVICES.map((service, idx) => (
                 <ServiceTile 
                 key={idx}
@@ -17,11 +19,27 @@ export function TileGrid(){
                 clickHandle={() => setServiceType(service)} />
             ))}
         </ThemedView>
+        {serviceType === "Search" ? (
+            <ThemedView style={{height:60, width:"100%", flexDirection:"row",justifyContent:"center"}}>
+                <ThemedTextInput value={searchInput} onChangeText={setSearchInput} />
+            </ThemedView>
+
+        ): (
+            <Spacer height={60}/>
+        )}
+        </ThemedView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex:1,
+        alignItems:'center',
+        width:"100%"
+
+
+    },
+    tilegrid: {
         flexDirection: "row",
         alignItems:"center",
         justifyContent:"center",
