@@ -1,12 +1,15 @@
-import { Image } from "expo-image"
-import { StyleSheet } from "react-native"
-import { ThemedText, ThemedView } from "../ui"
-
+import { Image } from "expo-image";
+import { StyleSheet } from "react-native";
+import Animated, {
+    PinwheelIn
+} from 'react-native-reanimated';
+import { ThemedText, ThemedView } from "../ui";
 interface ResultCardProps {
     result: ResultData
 }
 export const ResultCard = ({result}: ResultCardProps) => {
     const { name, imageUrl, displayAddress} = result
+    
 
     // return (
     //     <div style={{ border: '1px solid #ddd', borderRadius: 8, padding: 16, maxWidth: 350 }}>
@@ -21,6 +24,9 @@ export const ResultCard = ({result}: ResultCardProps) => {
     // )
     return (
         <ThemedView style={styles.container}>
+            <Animated.View entering={PinwheelIn}>
+
+            
             <Image 
                 style={styles.image} 
                 source={imageUrl} 
@@ -28,6 +34,7 @@ export const ResultCard = ({result}: ResultCardProps) => {
             />
             <ThemedText>{name}</ThemedText>
             <ThemedText>{displayAddress}</ThemedText>
+            </Animated.View>
 
         </ThemedView>
     )
@@ -39,6 +46,7 @@ const styles = StyleSheet.create({
     },
     image: {
         flex:1,
+        maxHeight:200,
         width: "100%"
     }
 })

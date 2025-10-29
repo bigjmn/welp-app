@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useRef } from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
@@ -13,6 +14,8 @@ const GooglePlacesInput = () => {
     <GooglePlacesAutocomplete
       ref={ref}
       placeholder='Search'
+      predefinedPlaces={[]}
+      textInputProps={{ autoFocus: false }}
       onPress={(data, details = null) => {
         // 'details' is provided when fetchDetails = true
         console.log(data, details);

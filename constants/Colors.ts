@@ -14,7 +14,7 @@ export const Colors = {
       warning: commonColors.warning,
       text: "#d4d4d4",
       title: "#fff",
-      background: "#171923",
+      background: "#000",
       navBackground: "#201e2b",
       iconColor: "#9591a5",
       iconColorFocused: "#fff",

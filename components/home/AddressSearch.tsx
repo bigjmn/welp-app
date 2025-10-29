@@ -1,31 +1,33 @@
 import { useTheme } from '@/hooks/useTheme';
 import { useUser } from '@/hooks/useUser';
 import { useState } from 'react';
-import GooglePlacesTextInput from 'react-native-google-places-textinput';
-import { ThemedButton, ThemedText, ThemedView } from '../ui';
+import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from 'react-native-google-places-textinput';
+import { ThemedView } from '../ui';
 interface AddressSearchProps {
-    handlePickMade: ()=>void
+    canSearch: boolean
 }
-const AddressSearch = ({handlePickMade}:AddressSearchProps) => {
+const AddressSearch = () => {
     const placesApi = "AIzaSyAxR8PtmkqEcpCrwSGr-AESqQFhbprCPTI"
     const [inputState, setInputState] = useState('')
     const {colors} = useTheme()
-    const { searchLocation, handleSearchLocation} = useUser()
-    const [locButtonSeen, setLocButtonSeen] = useState(false)
+    const { searchLocation, handleSearchLocation, usingCurrLocation} = useUser()
 
   const handlePlaceSelect = (place) => {
     console.log('Selected place:', place);
+    console.log(place.details)
+    setInputState(place.details.formattedAddress)
+    console.log(place.details.formattedAddress)
     
-    handleSearchLocation(place?.text || "")
-    setLocButtonSeen(false)
-    handlePickMade()
+    handleSearchLocation(place?.details)
+    
+    
   };
   const handleTextChange = (tval:string) => {
     if (tval === ""){
         setInputState("Your Location")
     }
   }
-  const customStyles = {
+  const customStyles:GooglePlacesTextInputStyles = {
     container: {
         
         
@@ -38,10 +40,13 @@ const AddressSearch = ({handlePickMade}:AddressSearchProps) => {
       
     },
     input: {
+      
       height: 45,
       borderColor: '#ccc',
       borderRadius: 8,
-      width:200,
+      width:170,
+      overflow:"scroll",
+      pointerEvents:usingCurrLocation? "none" : "auto",
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
       color: colors.text,
       
@@ -53,7 +58,7 @@ const AddressSearch = ({handlePickMade}:AddressSearchProps) => {
       maxHeight: 250,
       overflow:'visible',
       position:'absolute',
-      top:90,
+      
       left:0
     },
     suggestionItem: {
@@ -78,25 +83,30 @@ const AddressSearch = ({handlePickMade}:AddressSearchProps) => {
   };
 
   return (
+    
     <ThemedView style={{backgroundColor:'transparent'}}>
+       
     <GooglePlacesTextInput
       apiKey={placesApi}
       onPlaceSelect={handlePlaceSelect}
-      placeHolderText='Your Location'
+      placeHolderText='Search'
       value={inputState}
+      fetchDetails={true}
+      
+      
       onTextChange={handleTextChange}
       style={customStyles}
-      onFocus={() => setLocButtonSeen(true)}
+      minCharsToFetch={4}
+      
+      
       
       
       
     />
-    {locButtonSeen && (
-        <ThemedButton style={{position:'absolute',top:40,left:0}} onPress={() => handlePlaceSelect("")}>
-            <ThemedText style={{textDecorationLine:'underline'}}>Current Location</ThemedText>
-        </ThemedButton>
-    )}
+    
+    
     </ThemedView>
+   
   );
 };
 export default AddressSearch

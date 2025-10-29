@@ -1,12 +1,18 @@
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Spacer, ThemedTextInput, ThemedView } from "../ui";
-
+import { PrimaryButton, Spacer, ThemedTextInput, ThemedView } from "../ui";
 import { ServiceTile } from "./ServiceTile";
 const SERVICES:ServiceType[] = ["Delivery", "Restaurant", "Bar", "Search"]
 export function TileGrid(){
     const [serviceType, setServiceType] = useState<ServiceType>("Delivery")
     const [searchInput, setSearchInput] = useState<string>("")
+    
+    const router = useRouter()
+
+    const goToResults = () => {
+        router.replace({pathname: '/result', params:{serviceType, searchInput}})
+    }
 
     return (
         <ThemedView style={styles.container}>
@@ -27,6 +33,7 @@ export function TileGrid(){
         ): (
             <Spacer height={60}/>
         )}
+        <PrimaryButton style={{width:"80%"}} name="Let's Go!" onPress={goToResults} />
         </ThemedView>
     )
 }

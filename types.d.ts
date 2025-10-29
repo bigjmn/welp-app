@@ -9,6 +9,10 @@ interface ResultData {
     name: string; 
     imageUrl: string; 
     displayAddress: string; 
+    url: string; 
+    rating: number;
+    displayPhone: string;
+    categories: string[]
 }
 
 interface SearchResponse {
@@ -16,7 +20,13 @@ interface SearchResponse {
     errMessage: string | null
 
 }
-
+interface ResultCardProps {
+    result: ResultData
+}
+interface Category {
+    title: string;
+    alias:string;
+}
 type Review = "Pretty dece!" | "Eh."
 interface HistoryItem {
     timestamp: number;

@@ -1,28 +1,50 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Location from "expo-location";
+import * as Location from "expo-location";
 import { customAlphabet } from "nanoid/non-secure";
 import React, { createContext, useEffect, useState } from "react";
+import { PlaceDetailsFields } from 'react-native-google-places-textinput';
 interface UserProps {
     location: Location.LocationObject | null;
     errorMsg: string | null;
     user: User | null;
     logHistory: (resultName:string,review?:Review)=>void,
-    searchLocation: string | null,
-    handleSearchLocation:(sl:string)=>void 
+    searchLocation: PlaceDetailsFields | null,
+    handleSearchLocation:(sl:PlaceDetailsFields)=>void,
+    usingCurrLocation:boolean,
+    handleUsingCurrLocation:()=>void, 
+    usingNow:boolean,
+    handleUsingNow:()=>void,
+    searchTime:Date|null,
+    handleSearchTime:(newdate:Date)=>void
+
 }
 const alphaNumber = "abcdefghijklmnopqrstuvwxyz123456789"
 
 const generateId = customAlphabet(alphaNumber, 6)
-export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:()=>{}, searchLocation:null,handleSearchLocation:()=>{} })
+export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:()=>{}, searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
 
-export function UserLocationProvider({ children } : {children : React.ReactNode}){
+export function UserProvider({ children } : {children : React.ReactNode}){
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null)
-    const [searchLocation, setSearchLocation] = useState<string | null>(null);
+    const [searchLocation, setSearchLocation] = useState<PlaceDetailsFields | null>(null);
+    const [usingCurrLocation, setUsingCurrLocation] = useState(true)
+    const [usingNow, setUsingNow] = useState(true)
+    const [searchTime, setSearchTime] = useState<Date|null>(null)
 
-    const handleSearchLocation = (sl:string)=> {
+    const handleSearchLocation = (sl:PlaceDetailsFields)=> {
       setSearchLocation(sl)
+    }
+    const handleUsingNow = () => {
+      setUsingNow(x => !x)
+    }
+    const handleUsingCurrLocation = () => {
+      console.log(usingCurrLocation)
+      setUsingCurrLocation(x => !x)
+
+    }
+    const handleSearchTime = (newdate:Date) => {
+      setSearchTime(newdate)
     }
 
     const logHistory = async (resultName:string, review?: Review) => {
@@ -79,11 +101,11 @@ export function UserLocationProvider({ children } : {children : React.ReactNode}
             } catch (e) {
                 console.log(e)
             }
-        })
-      })
+        })()
+      }, [])
 
       return (
-        <UserContext.Provider value={{ location, errorMsg, user, logHistory, searchLocation,handleSearchLocation }}>
+        <UserContext.Provider value={{ location, errorMsg, user, logHistory, searchLocation,handleSearchLocation, usingCurrLocation,handleUsingCurrLocation,usingNow,handleUsingNow, searchTime, handleSearchTime }}>
             { children }
         </UserContext.Provider>
       )
