@@ -19,7 +19,6 @@ import Animated, {
 // }
 
 export default function Result(){
-    const [result, setResult] = useState<ResultData|null>(null)
     const [weightedResults, setWeightedResults] = useState<ResultData[]|null>(null)
     const [resultIdx, setResultIdx] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
@@ -29,23 +28,65 @@ export default function Result(){
 
     const [showCard, setShowCard] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
+    const [isCycling, setIsCycling] = useState(false);
+    const [pendingIdx, setPendingIdx] = useState<number | null>(null);
 
   const showButtonsDelayed = useCallback(() => {
     setShowButtons(true);
   }, []);
 
+    const continueAnimating = isLoading;
+
+    const handleCountdownFinished = useCallback(() => {
+    setShowCard(true);
+    setShowButtons(false);
+    if (pendingIdx !== null) {
+      setResultIdx(pendingIdx);
+      setPendingIdx(null);
+    }
+    setIsCycling(false);
+  }, [pendingIdx]);
+
+    const advanceResult = useCallback(
+    (decision: "accept" | "reject") => {
+      if (!weightedResults) {
+        return;
+      }
+      if (isCycling) {
+        return;
+      }
+
+      const nextIdx = resultIdx + 1;
+      console.log(`${decision} handler`);
+      setPendingIdx(nextIdx);
+      setIsCycling(true);
+      setShowButtons(false);
+      setShowCard(false);
+    },
+    [isCycling, resultIdx, weightedResults]
+  );
+
     useEffect(() => {
         if (!user){
             return
         }
-        if (weightedResults){
-            console.log(weightedResults.length)
-            setResultIdx(x => x+1)
-            return
-        }
+
+        let isActive = true
+
+        setIsLoading(true)
+        setShowCard(false)
+        setShowButtons(false)
+        setIsCycling(false)
+        setPendingIdx(null)
+        setWeightedResults(null)
+        setResultIdx(0)
+
         const {preferUnseen, orderHistory} = user
         getResults(serviceType, searchInput)
         .then((resultOb) => {
+            if (!isActive){
+                return
+            }
             if (resultOb.errMessage !== null){
                 throw Error(resultOb.errMessage)
             }
@@ -53,36 +94,37 @@ export default function Result(){
             setWeightedResults(shuffledResults)
         }).catch((e) => console.log(e))
         .finally(() => {
+            if (!isActive){
+                return
+            }
             setIsLoading(false)
         })
-    }, [serviceType, searchInput])
-    const handleReject = () => {
-        console.log('rejection handler')
-    }
-    const handleAccept = () => {
-        console.log('accept handler')
-    }
-    const handleCountdownFinished = useCallback(() => {
-    setShowCard(true);
-    setShowButtons(false);
-  }, []);
+
+        return () => {
+            isActive = false
+        }
+    }, [getResults, searchInput, serviceType, user])
 
     return (
         <ThemedView style={styles.screen}>
-            <ThemedText>Welp, you're getting...</ThemedText>
+            <ThemedText>Welp, you&apos;re getting...</ThemedText>
             {(!showCard) ? (
-                <DrumRoll 
-                    continueAnimating={isLoading} 
-                    onFinished={handleCountdownFinished} 
+                <DrumRoll
+                    continueAnimating={continueAnimating}
+                    onFinished={handleCountdownFinished}
                     />
                 ) : (weightedResults && weightedResults.length > resultIdx) ? (
                     <>
                     <DataFetchedCard unlockButtons={showButtonsDelayed} result={weightedResults[resultIdx]} />
-                    <ButtonsColumn visible={showButtons} />
+                    <ButtonsColumn
+                      visible={showButtons}
+                      onAccept={() => advanceResult("accept")}
+                      onReject={() => advanceResult("reject")}
+                    />
                     </>
-                ) : 
+                ) :
                 (<ThemedText>Nothing!</ThemedText>)}
-            
+
         </ThemedView>
     )
 
@@ -125,15 +167,23 @@ function DataFetchedCard({ unlockButtons, result }: { unlockButtons: () => void,
   );
 }
 
-function ButtonsColumn({ visible }: { visible: boolean }) {
+function ButtonsColumn({
+  visible,
+  onAccept,
+  onReject,
+}: {
+  visible: boolean;
+  onAccept: () => void;
+  onReject: () => void;
+}) {
   const baseDelay = 600;
   const offsets = useMemo(() => [0, 160], []);
   const buttons = useMemo(
     () => [
-      { label: "Welp, I tried it", onPress: () => {} },
-      { label: "No welping way.", onPress: () => {} },
+      { label: "Welp, I tried it", onPress: onAccept },
+      { label: "No welping way.", onPress: onReject },
     ],
-    []
+    [onAccept, onReject]
   );
 
   return (
