@@ -9,7 +9,7 @@ interface UserProps {
     user: User | null;
     logHistory: (resultId:string, resultName:string,review?:Review)=>void,
     searchLocation: PlaceDetailsFields | null,
-    handleSearchLocation:(sl:PlaceDetailsFields)=>void,
+    handleSearchLocation:(sl?:PlaceDetailsFields)=>void,
     usingCurrLocation:boolean,
     handleUsingCurrLocation:()=>void, 
     usingNow:boolean,
@@ -30,8 +30,11 @@ export function UserProvider({ children } : {children : React.ReactNode}){
     const [usingNow, setUsingNow] = useState(true)
     const [searchTime, setSearchTime] = useState<Date|null>(null)
 
-    const handleSearchLocation = (sl:PlaceDetailsFields)=> {
-      setSearchLocation(sl)
+    const handleSearchLocation = (sl?:PlaceDetailsFields)=> {
+      if (sl){
+        setSearchLocation(sl)
+      }
+      
     }
     const handleUsingNow = () => {
       setUsingNow(x => !x)
