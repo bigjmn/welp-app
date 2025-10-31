@@ -25,14 +25,16 @@ export function TileGrid(){
                 clickHandle={() => setServiceType(service)} />
             ))}
         </ThemedView>
+        <Spacer height={20} />
         {serviceType === "Search" ? (
-            <ThemedView style={{height:60, width:"100%", flexDirection:"row",justifyContent:"center"}}>
+            <ThemedView style={{height:40, width:"100%", flexDirection:"row",justifyContent:"center"}}>
                 <ThemedTextInput value={searchInput} onChangeText={setSearchInput} />
             </ThemedView>
 
         ): (
-            <Spacer height={60}/>
+            <Spacer height={40}/>
         )}
+        <Spacer height={10} />
         <PrimaryButton style={{width:"80%"}} name="Let's Go!" onPress={goToResults} />
         </ThemedView>
     )

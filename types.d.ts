@@ -29,6 +29,7 @@ interface Category {
 }
 type Review = "Pretty dece!" | "Eh."
 interface HistoryItem {
+    id:string;
     timestamp: number;
     name: string; 
     review?: Review; 
@@ -41,3 +42,5 @@ interface User {
     preferUnseen: boolean 
     orderHistory: HistoryItem[]
 }
+
+type TextVariant = "regular"|"tabText"|"header"|"promptText"|"title"|"dateText"|"voteAnswer"|"italicStyle"

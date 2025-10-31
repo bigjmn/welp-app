@@ -45,6 +45,7 @@ export const useWelpSearch = () => {
         const searchEndpoint = createSearch(serviceType, latitude, longitude, timingString, searchTerm)
 
         try {
+            console.log("API CALL")
             const response = await fetch(searchEndpoint, {headers:headers})
             if (response.status >= 400){
                 throw Error("Something bad happened!")

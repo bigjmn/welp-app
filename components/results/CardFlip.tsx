@@ -20,7 +20,7 @@ const RegularContent = ({result}:ResultCardProps) => {
             source={imageUrl}
             contentFit='cover'
         />
-      <ThemedText style={regularContentStyles.text}>{name}</ThemedText>
+      <ThemedText variant='header' style={regularContentStyles.text}>{name}</ThemedText>
     </ThemedView>
   );
 };
@@ -35,8 +35,11 @@ const regularContentStyles = StyleSheet.create({
   },
   image: {
         flex:1,
-        maxHeight:200,
-        width: "100%"
+        
+        width: "100%",
+        
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10
     },
   text: {
     color: '#001a72',
@@ -47,9 +50,9 @@ const FlippedContent = ({result}:ResultCardProps) => {
     const { name, url, categories, displayAddress, displayPhone } = result
     const { colors } = useTheme()
   return (
-    <View style={flippedContentStyles.card}>
-        <ThemedView style={flippedContentStyles.cardRow}>
-            <ThemedText style={flippedContentStyles.text} variant={"tabText"}>{name}</ThemedText>
+    <View style={[flippedContentStyles.card]}>
+        <ThemedView style={[flippedContentStyles.cardHead]}>
+            <ThemedText style={flippedContentStyles.headertext} variant={"header"}>{name}</ThemedText>
         </ThemedView>
         <Spacer height={5} />
         <ThemedView style={flippedContentStyles.line} />
@@ -61,7 +64,8 @@ const FlippedContent = ({result}:ResultCardProps) => {
         <ThemedView style={flippedContentStyles.line} />
         <Spacer height={5} />
         <ThemedView style={flippedContentStyles.cardRow}>
-            <Ionicons name="location" color={colors.iconColor} />
+            <Ionicons name="location" color={colors.iconColor} size={24} />
+            <Spacer width={10} />
             <ThemedText style={flippedContentStyles.text}>{displayAddress}</ThemedText>
         </ThemedView>
         <Spacer height={5} />
@@ -69,7 +73,8 @@ const FlippedContent = ({result}:ResultCardProps) => {
         <Spacer height={5} />
         
         <ThemedView style={flippedContentStyles.cardRow}>
-            <Ionicons name="call" color={colors.iconColor} />
+            <Ionicons name="call" color={colors.iconColor} size={24} />
+            <Spacer width={10} />
             <ThemedText style={flippedContentStyles.text}>{displayPhone}</ThemedText>
         </ThemedView>
         <Spacer height={5} />
@@ -80,29 +85,45 @@ const FlippedContent = ({result}:ResultCardProps) => {
 const flippedContentStyles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: '#b6cff7',
+    backgroundColor: 'rgba(255,255,255,.2)',
     borderRadius: 16,
-    justifyContent: 'center',
+    
     alignItems: 'flex-start',
     padding:6,
   },
+  cardHead: {
+    display:'flex',
+    flexDirection:'row',
+    padding:8,
+    justifyContent:'center',
+    width:"100%",
+    backgroundColor:"transparent"
+
+
+  },
+  headertext:{
+    color:"white",
+    textDecorationLine:"underline"
+  },
   text: {
-    color: '#001a72',
+    color: '#e2e2e2',
+    fontSize:18
   },
   cardRow: {
     display:'flex',
     flexDirection:'row',
     padding:3,
     alignItems:"center",
-    backgroundColor: '#b6cff7',
+    backgroundColor:"transparent"
+   
 
   },
   line: {
     
     width:"90%",
     
-    height: 1, // Thickness of the line
-    backgroundColor: '#222', // Color of the line
+    height: 2, // Thickness of the line
+    backgroundColor: '#e2e2e2', // Color of the line
   },
 });
 
@@ -201,9 +222,11 @@ export default function PlaceCard({result}:ResultCardProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 300,
+    height: 500,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius:10,
+    padding:6
   },
   buttonContainer: {
     marginTop: 16,
@@ -220,8 +243,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   flipCard: {
-    width: 200,
-    height: 230,
+    width: 300,
+    height: 330,
+    borderRadius:10,
     backfaceVisibility: 'hidden',
   },
 });

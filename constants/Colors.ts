@@ -1,12 +1,10 @@
 export const commonColors = {
-    primary: "#5a189a",
+    primary: "#6254e1ff",
     secondary: "#00c1a9",
     warning: "#cc475a",
 }
 export const Colors = {
-    primary: "#5a189a",
-    secondary: "#00c1a9",
-    warning: "#cc475a",
+    
     
     dark: {
       primary: commonColors.primary,

@@ -1,13 +1,13 @@
+import { generateId } from '@/utils/randomizers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from "expo-location";
-import { customAlphabet } from "nanoid/non-secure";
 import React, { createContext, useEffect, useState } from "react";
 import { PlaceDetailsFields } from 'react-native-google-places-textinput';
 interface UserProps {
     location: Location.LocationObject | null;
     errorMsg: string | null;
     user: User | null;
-    logHistory: (resultName:string,review?:Review)=>void,
+    logHistory: (resultId:string, resultName:string,review?:Review)=>void,
     searchLocation: PlaceDetailsFields | null,
     handleSearchLocation:(sl:PlaceDetailsFields)=>void,
     usingCurrLocation:boolean,
@@ -18,9 +18,7 @@ interface UserProps {
     handleSearchTime:(newdate:Date)=>void
 
 }
-const alphaNumber = "abcdefghijklmnopqrstuvwxyz123456789"
 
-const generateId = customAlphabet(alphaNumber, 6)
 export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:()=>{}, searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
 
 export function UserProvider({ children } : {children : React.ReactNode}){
@@ -47,9 +45,10 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       setSearchTime(newdate)
     }
 
-    const logHistory = async (resultName:string, review?: Review) => {
+    const logHistory = async (resultId:string,resultName:string, review?: Review) => {
       const timestamp = Date.now()
       const historyItem:HistoryItem = {
+        id: resultId,
         timestamp,
         name: resultName, 
         review

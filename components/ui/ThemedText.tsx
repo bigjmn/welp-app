@@ -1,5 +1,6 @@
 import { StyleProp, Text, TextStyle } from 'react-native';
-import { defaultStyle, italicStyle, voteAnswerStyle } from '../../constants/TextTypeStyles';
+// import { defaultStyle, italicStyle, voteAnswerStyle } from '';
+import { defaultStyle, italicStyle, voteAnswerStyle } from '@/constants/TextTypeStyles';
 import { useTheme } from '../../hooks/useTheme';
 interface ThemedTextProps {
     style?: StyleProp<TextStyle>; 
@@ -15,7 +16,7 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
     if (variant === "title"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Bold", fontWeight: 700, fontSize:50}, style]}
+                style={[{color: textColor, fontFamily: "Ubuntu-Bold", fontWeight: 700, fontSize:70}, style]}
                 {...props}
                 />
         )

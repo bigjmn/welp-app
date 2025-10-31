@@ -4,9 +4,7 @@ import Animated, {
     PinwheelIn
 } from 'react-native-reanimated';
 import { ThemedText, ThemedView } from "../ui";
-interface ResultCardProps {
-    result: ResultData
-}
+
 export const ResultCard = ({result}: ResultCardProps) => {
     const { name, imageUrl, displayAddress} = result
     
@@ -42,11 +40,11 @@ export const ResultCard = ({result}: ResultCardProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        maxWidth: 350
+        maxWidth: 550
     },
     image: {
         flex:1,
-        maxHeight:200,
+        
         width: "100%"
     }
 })
