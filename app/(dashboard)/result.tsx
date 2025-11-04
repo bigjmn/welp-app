@@ -1,12 +1,15 @@
 import PlaceCard from "@/components/results/CardFlip";
 import DrumRoll from "@/components/results/DrumRoll";
-import { ThemedText, ThemedView } from "@/components/ui";
+import ReviewModal from "@/components/results/ReviewModal";
+import { PrimaryButton, Spacer, ThemedText, ThemedView } from "@/components/ui";
+import { usePrefs } from "@/hooks/usePrefs";
+import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { useWelpSearch } from "@/hooks/useWelpSearch";
 import { shufflePrefs } from "@/utils/randomizers";
 import { useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import Animated, {
     Easing,
     runOnJS,
@@ -26,6 +29,7 @@ export default function Result(){
     const { serviceType, searchInput }:{serviceType:ServiceType,searchInput:string} = useLocalSearchParams()
     const { getResults } = useWelpSearch()
     const { user } = useUser()
+    const { preferUnseen } = usePrefs()
 
     const [showCard, setShowCard] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
@@ -34,16 +38,24 @@ export default function Result(){
     setShowButtons(true);
   }, []);
 
+  useEffect(() => {
+    console.log(serviceType)
+  }, [serviceType])
+
+  
+
     useEffect(() => {
         if (!user){
             return
         }
-        if (weightedResults){
+        setIsLoading(true)
+        setShowCard(false)
+        if (weightedResults && weightedResults.length>0){
             console.log(weightedResults.length)
-            setResultIdx(x => x+1)
-            return
+            console.log(resultIdx)
+            
         }
-        const {preferUnseen, orderHistory} = user
+        const {orderHistory} = user
         getResults(serviceType, searchInput)
         .then((resultOb) => {
             if (resultOb.errMessage !== null){
@@ -55,21 +67,38 @@ export default function Result(){
         .finally(() => {
             setIsLoading(false)
         })
+
+        return () => {
+            console.log('leaving')
+            setWeightedResults([])
+        }
     }, [serviceType, searchInput])
     const handleReject = () => {
         console.log('rejection handler')
+        setShowCard(false)
+        setResultIdx(x => x+1)
     }
     const handleAccept = () => {
-        console.log('accept handler')
+        if (weightedResults && weightedResults[resultIdx]){
+            setResult(weightedResults[resultIdx])
+        }
     }
     const handleCountdownFinished = useCallback(() => {
     setShowCard(true);
     setShowButtons(false);
   }, []);
+    const closeModal = () => {
+        setResult(null)
+
+    }
 
     return (
         <ThemedView style={styles.screen}>
-            <ThemedText>Welp, you're getting...</ThemedText>
+            <ReviewModal result={result} closeModal={closeModal} />
+            
+            <Spacer height={40} />
+            <ThemedText variant="header">Welp, you're getting...</ThemedText>
+            <Spacer height={40} />
             {(!showCard) ? (
                 <DrumRoll 
                     continueAnimating={isLoading} 
@@ -78,7 +107,7 @@ export default function Result(){
                 ) : (weightedResults && weightedResults.length > resultIdx) ? (
                     <>
                     <DataFetchedCard unlockButtons={showButtonsDelayed} result={weightedResults[resultIdx]} />
-                    <ButtonsColumn visible={showButtons} />
+                    <ButtonsColumn visible={showButtons} handleReject={handleReject} handleAccept={handleAccept} />
                     </>
                 ) : 
                 (<ThemedText>Nothing!</ThemedText>)}
@@ -93,6 +122,7 @@ export default function Result(){
 function DataFetchedCard({ unlockButtons, result }: { unlockButtons: () => void, result:ResultData }) {
   const rotation = useSharedValue(-180);
   const scale = useSharedValue(0.4);
+  const { colors } = useTheme()
 
   useEffect(() => {
     rotation.value = withTiming(
@@ -119,19 +149,19 @@ function DataFetchedCard({ unlockButtons, result }: { unlockButtons: () => void,
   }));
 
   return (
-    <Animated.View style={[styles.card, animatedStyle]}>
+    <Animated.View style={[styles.card, animatedStyle, {backgroundColor: colors.uiBackground}]}>
       <PlaceCard result={result} />
     </Animated.View>
   );
 }
 
-function ButtonsColumn({ visible }: { visible: boolean }) {
+function ButtonsColumn({ visible, handleReject, handleAccept }: { visible: boolean, handleReject:()=>void, handleAccept:()=>void }) {
   const baseDelay = 600;
   const offsets = useMemo(() => [0, 160], []);
   const buttons = useMemo(
     () => [
-      { label: "Welp, I tried it", onPress: () => {} },
-      { label: "No welping way.", onPress: () => {} },
+      { label: "Welp, I tried it", onPress: () => {handleAccept()} },
+      { label: "No welping way.", onPress: () => {handleReject()} },
     ],
     []
   );
@@ -199,9 +229,10 @@ function SlidingButton({
 
   return (
     <Animated.View style={[styles.buttonWrapper, animatedStyle]}>
-      <Pressable onPress={onPress} style={styles.button}>
+      {/* <Pressable onPress={onPress} style={styles.button}>
         <ThemedText style={styles.buttonText}>{label}</ThemedText>
-      </Pressable>
+      </Pressable> */}
+      <PrimaryButton name={label} onPress={onPress} />
     </Animated.View>
   );
 }
@@ -209,7 +240,7 @@ function SlidingButton({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
+    
     alignItems: "center",
     
   },
@@ -217,7 +248,8 @@ const styles = StyleSheet.create({
     width: 320,
     height: 350,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: 'rgba(255,255,255,.2)',
+    // backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",

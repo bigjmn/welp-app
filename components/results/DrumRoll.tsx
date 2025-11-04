@@ -1,3 +1,4 @@
+import { Image } from "expo-image";
 import { useEffect, useRef } from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
@@ -10,7 +11,6 @@ import Animated, {
     withSpring,
     withTiming,
 } from "react-native-reanimated";
-
 type DrumRollProps = {
   continueAnimating: boolean;
   duration?: number;
@@ -85,11 +85,12 @@ export default function DrumRoll({
     translateX.value = withSequence(
       withTiming(ENTRY_OFFSET, { duration: 0 }),
       withSpring(0, { ...SPRING_CONFIG, damping: 25, stiffness: 180 }),
-      withDelay(
-        exitDelay,
-        withSpring(EXIT_OFFSET, { ...SPRING_CONFIG, damping: 21, stiffness: 190 })
-      ),
-      withDelay(RESET_PAUSE_MS, withTiming(ENTRY_OFFSET, { duration: 0 }))
+      withSpring(EXIT_OFFSET, { ...SPRING_CONFIG, damping: 21, stiffness: 190 }),
+    //   withDelay(
+    //     exitDelay,
+    //     withSpring(EXIT_OFFSET, { ...SPRING_CONFIG, damping: 21, stiffness: 190 })
+    //   ),
+    //   withDelay(RESET_PAUSE_MS, withTiming(ENTRY_OFFSET, { duration: 0 }))
     );
     scale.value = withSequence(
       withTiming(0.9, { duration: 0 }),
@@ -134,13 +135,26 @@ export default function DrumRoll({
 
   return (
     <Animated.View style={[styles.container, containerAnimatedStyle]}>
-      <Animated.Image
+      {/* <Animated.Image
         source={{ uri: GIF_URI }}
         style={[styles.gif, imageAnimatedStyle]}
         resizeMode="contain"
-      />
+      /> */}
+      <RollingDrum />
     </Animated.View>
   );
+}
+
+function RollingDrum(){
+    const drumpic = require("@/assets/drgif.gif")
+    return (
+        <Image 
+            source={require("@/assets/drg2.gif")}
+            autoplay
+            style={{width:200,height:200}}
+            contentFit="contain"
+            />
+    )
 }
 
 const styles = StyleSheet.create({

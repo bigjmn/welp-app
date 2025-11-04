@@ -1,3 +1,4 @@
+import { usePrefs } from "./usePrefs";
 import { useUser } from "./useUser";
 const endpointMap:Record<ServiceType,string> = {
     "Restaurant": "https://api.yelp.com/v3/businesses/search?",
@@ -8,13 +9,13 @@ const endpointMap:Record<ServiceType,string> = {
 const catMap = (cat:Category) => {
     return cat.title; 
 }
-const createSearch = (serviceType:ServiceType, latitude:number, longitude:number, searchtime:number|null, terms: string) => {
+const createSearch = (serviceType:ServiceType, latitude:number, longitude:number, searchtime:number|null, terms: string, prefString:string) => {
     const timing_string = searchtime === null ? "open_now=true" : `open_at=${searchtime}`
     if (serviceType === "Restaurant"){
-        return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&sort_by=best_match&limit=20`
+        return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&${prefString}&sort_by=best_match&limit=20`
     }
     if (serviceType === "Delivery"){
-        return `https://api.yelp.com/v3/transactions/delivery/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&sort_by=best_match&limit=20`
+        return `https://api.yelp.com/v3/transactions/delivery/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&${prefString}&sort_by=best_match&limit=20`
     }
     if (serviceType === "Bar"){
         return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&categories=[bars]&${timing_string}&sort_by=best_match&limit=20`
@@ -34,18 +35,22 @@ const createSearch = (serviceType:ServiceType, latitude:number, longitude:number
 export const useWelpSearch = () => {
     const apiKey = process.env.EXPO_PUBLIC_YELP_API
 
+    const { catString } = usePrefs()
+
     const headers:Record<string, string> = {"accept": "application/json", "authorization": "Bearer "+apiKey};
     const { usingCurrLocation, location, searchLocation, usingNow, searchTime } = useUser()
     
 
     const getResults = async (serviceType:ServiceType, searchTerm:string) => {
+        const prefString = catString()
         const latitude = (usingCurrLocation && location) ? location.coords.latitude : searchLocation!.latitude
         const longitude = (usingCurrLocation && location) ? location.coords.longitude : searchLocation!.longitude 
         const timingString = usingNow ? null : searchTime ? searchTime.valueOf() : null 
-        const searchEndpoint = createSearch(serviceType, latitude, longitude, timingString, searchTerm)
+        const searchEndpoint = createSearch(serviceType, latitude, longitude, timingString, searchTerm, prefString)
 
         try {
             console.log("API CALL")
+            console.log(searchEndpoint)
             const response = await fetch(searchEndpoint, {headers:headers})
             if (response.status >= 400){
                 throw Error("Something bad happened!")

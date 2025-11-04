@@ -1,9 +1,18 @@
 import { commonColors } from "@/constants/Colors";
+import { useTheme } from "@/hooks/useTheme";
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import ThemedText from "./ThemedText";
+
 interface PrimaryButtonProps {
     style?: StyleProp<ViewStyle>;
     name: string;
+    [key: string]: any;
+  }
+
+interface UnderlinedButtonProps {
+    style?: StyleProp<ViewStyle>;
+    name: string;
+    isActive:boolean;
     [key: string]: any;
   }
 interface ThemedButtonProps {
@@ -30,6 +39,23 @@ export function PrimaryButton({ style, name, ...props }: PrimaryButtonProps){
       </Pressable>
     )
 }
+
+export function UnderlinedButton({style, name, isActive, ...props}:UnderlinedButtonProps){
+  const { colors } = useTheme()
+
+  return (
+    <Pressable 
+    style={({pressed}) => [styles.ulineBtn, pressed && styles.pressed, style]}
+    {...props}
+    >
+      <ThemedText variant="tabText" style={{color: isActive ? colors.secondary : colors.text, textDecorationLine:"underline" }}>
+        {name}
+      </ThemedText>
+
+    </Pressable>
+  )
+
+}
   const styles = StyleSheet.create({
     btn: {
       backgroundColor: commonColors.primary,
@@ -42,5 +68,11 @@ export function PrimaryButton({ style, name, ...props }: PrimaryButtonProps){
     pressed: {
       opacity: 0.5
     },
+    ulineBtn: {
+      padding: 10,
+      borderRadius: 6,
+      marginVertical: 5,
+      alignItems: "center",
+    }
   })
   

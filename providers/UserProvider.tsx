@@ -7,7 +7,7 @@ interface UserProps {
     location: Location.LocationObject | null;
     errorMsg: string | null;
     user: User | null;
-    logHistory: (resultId:string, resultName:string,review?:Review)=>void,
+    logHistory: (resultId:string, resultName:string,timestamp:number,review?:Review)=>Promise<ConfirmMessage>,
     searchLocation: PlaceDetailsFields | null,
     handleSearchLocation:(sl?:PlaceDetailsFields)=>void,
     usingCurrLocation:boolean,
@@ -19,7 +19,7 @@ interface UserProps {
 
 }
 
-export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:()=>{}, searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
+export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:async()=>({errMessage:null}), searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
 
 export function UserProvider({ children } : {children : React.ReactNode}){
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -48,8 +48,8 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       setSearchTime(newdate)
     }
 
-    const logHistory = async (resultId:string,resultName:string, review?: Review) => {
-      const timestamp = Date.now()
+    const logHistory = async (resultId:string,resultName:string, timestamp:number, review?: Review) => {
+      
       const historyItem:HistoryItem = {
         id: resultId,
         timestamp,
@@ -61,13 +61,19 @@ export function UserProvider({ children } : {children : React.ReactNode}){
         const updatedUser:User = {...user, orderHistory: [...user.orderHistory, historyItem]}
         await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
         setUser(updatedUser)
+
+        return { errMessage: null } as ConfirmMessage 
         
       } else {
         throw Error("no user!")
       }
 
       } catch (e){
-        console.log(e)
+        let errMess = "error occurred!"
+        if (e instanceof Error){
+          errMess = e.message 
+        }
+        return {errMessage:errMess} as ConfirmMessage
         
       }
       
@@ -96,7 +102,7 @@ export function UserProvider({ children } : {children : React.ReactNode}){
 
                 } else {
                     const newId = generateId()
-                    const newUser:User = {id: newId, preferUnseen:true, orderHistory:[]}
+                    const newUser:User = {id: newId, orderHistory:[]}
                     await AsyncStorage.setItem('user', JSON.stringify(newUser))
                     setUser(newUser)
                 }

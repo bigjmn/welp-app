@@ -4,6 +4,7 @@ export const commonColors = {
     warning: "#cc475a",
 }
 export const Colors = {
+    primary: commonColors.primary,
     
     
     dark: {

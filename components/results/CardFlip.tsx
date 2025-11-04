@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/hooks/useTheme';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
@@ -13,14 +14,16 @@ import Animated, {
 import { Spacer, ThemedText, ThemedView } from '../ui';
 const RegularContent = ({result}:ResultCardProps) => {
     const { name, imageUrl } = result 
+    const { colors } = useTheme()
   return (
-    <ThemedView style={regularContentStyles.card}>
+    <ThemedView style={[regularContentStyles.card, {backgroundColor: colors.uiBackground}]}>
         <Image 
             style={regularContentStyles.image}
             source={imageUrl}
             contentFit='cover'
         />
-      <ThemedText variant='header' style={regularContentStyles.text}>{name}</ThemedText>
+      <ThemedText variant='header'>{name}</ThemedText>
+      <ThemedText variant='italicStyle'>(flip for details)</ThemedText>
     </ThemedView>
   );
 };
@@ -28,7 +31,7 @@ const RegularContent = ({result}:ResultCardProps) => {
 const regularContentStyles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: '#b6cff7',
+    // backgroundColor: '#b6cff7',
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
@@ -42,7 +45,7 @@ const regularContentStyles = StyleSheet.create({
         borderTopRightRadius:10
     },
   text: {
-    color: '#001a72',
+    color: Colors.primary,
   },
 });
 
@@ -50,7 +53,7 @@ const FlippedContent = ({result}:ResultCardProps) => {
     const { name, url, categories, displayAddress, displayPhone } = result
     const { colors } = useTheme()
   return (
-    <View style={[flippedContentStyles.card]}>
+    <View style={[flippedContentStyles.card, {backgroundColor: colors.uiBackground}]}>
         <ThemedView style={[flippedContentStyles.cardHead]}>
             <ThemedText style={flippedContentStyles.headertext} variant={"header"}>{name}</ThemedText>
         </ThemedView>
@@ -85,7 +88,7 @@ const FlippedContent = ({result}:ResultCardProps) => {
 const flippedContentStyles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,.2)',
+    
     borderRadius: 16,
     
     alignItems: 'flex-start',
@@ -102,11 +105,11 @@ const flippedContentStyles = StyleSheet.create({
 
   },
   headertext:{
-    color:"white",
+    color:Colors.primary,
     textDecorationLine:"underline"
   },
   text: {
-    color: '#e2e2e2',
+    color: Colors.primary,
     fontSize:18
   },
   cardRow: {

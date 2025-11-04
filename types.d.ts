@@ -39,8 +39,12 @@ interface HistoryItem {
 }
 interface User {
     id: string; 
-    preferUnseen: boolean 
+    
     orderHistory: HistoryItem[]
+}
+
+interface ConfirmMessage {
+    errMessage: string|null;
 }
 
 type TextVariant = "regular"|"tabText"|"header"|"promptText"|"title"|"dateText"|"voteAnswer"|"italicStyle"

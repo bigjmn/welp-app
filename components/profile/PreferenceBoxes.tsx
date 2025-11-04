@@ -10,18 +10,23 @@ export default function PreferenceBoxes(){
 
     return (
         <ThemedView style={styles.container}>
+            <ThemedText variant="header">Include Categories</ThemedText>
+            <ThemedView style={styles.boxholder}>
             {Object.entries(foodPrefs).map(([k,va],v) => (
-                <ThemedView key={v}>
+                <ThemedView style={{width:"45%",display:'flex',flexDirection:'row',alignItems:'center',marginLeft:15}} key={v}>
                     <Checkbox 
                         style={styles.checkbox}
                         value={va}
-                        onChange={()=>updateFoodPrefs(k)}
+                        onValueChange={()=>updateFoodPrefs(k)}
                         />
                     <ThemedText>{CATEGORIES_DICT[k].label}</ThemedText>
-
+                
                 </ThemedView>
+                
             ))
+            
         }
+        </ThemedView>
         </ThemedView>
     )
 
@@ -30,12 +35,28 @@ export default function PreferenceBoxes(){
 
 const styles = StyleSheet.create({
     container: {
-        flex:1
+        width:"100%",
+        alignItems:'center'
+        
     },
+
     boxholder:{
-        padding:3
+        padding:6,
+        
+        flexDirection:'row',
+        flexWrap:'wrap',
+        gap:4,
+        rowGap:12,
+        borderColor:'white',
+        borderWidth:1,
+        justifyContent:'center',
+        alignItems:'center'
+        
     },
     checkbox:{
+        margin:5,
+        marginLeft:20,
+        marginRight:10
 
     }
 })
