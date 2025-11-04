@@ -1,7 +1,9 @@
+import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Dimensions, Modal, StyleSheet } from "react-native";
-import { PrimaryButton, ThemedButton, ThemedText, ThemedView } from "../ui";
+import { Dimensions, Modal, Pressable, StyleSheet } from "react-native";
+import { Spacer, ThemedText, ThemedView } from "../ui";
 interface ReviewModalProps {
     result:ResultData|null; 
     closeModal:()=>void;
@@ -13,6 +15,8 @@ export default function ReviewModal({result,closeModal}:ReviewModalProps){
     const [logPending, setLogPending] = useState(false)
 
     const { logHistory } = useUser()
+
+    const { colors } = useTheme()
 
     useEffect(() => {
         if (result){
@@ -73,16 +77,31 @@ export default function ReviewModal({result,closeModal}:ReviewModalProps){
             visible={result !== null}
             >
                 {result && <ThemedView style={styles.container}>
-                    <ThemedView style={styles.modalView}>
-                        <ThemedText>How was {result.name}?</ThemedText>
-                        <ThemedView style={{flexDirection: "row", width: "80%", justifyContent:"center", gap: 5, alignItems: "center"}}>
-                            <PrimaryButton style={{width: "40%"}} onPress={() => reviewHandler("Pretty dece!")} name="Pretty dece!" />
-                            <PrimaryButton style={{width: "40%"}} onPress={() => reviewHandler("Eh.")} name="Eh..." />
+                    <ThemedView style={[styles.modalView, {backgroundColor: 'rgba(13,13,13,1)', borderColor:colors.text, borderWidth:2}]}>
+                        <ThemedText variant="tabText">How was {result.name}?</ThemedText>
+                        <Spacer height={20} />
+                        <ThemedView style={{width: "100%", justifyContent:"center", gap: 8, alignItems: "center"}}>
+                            {/* <PrimaryButton style={{width: "40%", borderRadius:10, backgroundColor:'rgba(255,255,255,.2)'}} onPress={() => reviewHandler("Pretty dece!")} name="Pretty dece!" /> */}
+                            <Pressable style={styles.presserStyle} onPress={() => reviewHandler("Pretty dece!")}>
+                                <Spacer width={16} height={1} />
+                                <ThemedText>Pretty dece!</ThemedText>
+                                
+                                <Ionicons size={20} color="green" name="thumbs-up-sharp" />
+                            </Pressable>
+                            <Pressable style={styles.presserStyle} onPress={() => reviewHandler("Eh.")}>
+                                <Spacer width={16} height={1} />
+                                
+                                <ThemedText>Eh.</ThemedText>
+                                
+                                
+                                <Ionicons size={20} color="#fc0325" name="thumbs-down-sharp" />
+                            </Pressable>
                         </ThemedView>
+                        <Spacer height={20} />
                         <ThemedView>
-                            <ThemedButton onPress={() => reviewHandler()}>
+                            <Pressable onPress={() => reviewHandler()}>
                                 <ThemedText style={{textDecorationLine: "underline"}}>skip</ThemedText>
-                            </ThemedButton>
+                            </Pressable>
                         </ThemedView>
                     </ThemedView>
                 </ThemedView>}
@@ -101,7 +120,7 @@ const styles = StyleSheet.create({
         height: screenHeight,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        backgroundColor: 'rgba(0, 0, 0, 0.8)'
     },
     modalView: {
         margin: 20,
@@ -118,4 +137,15 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
       },
+      presserStyle: {
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        backgroundColor:'rgba(255,255,255,.2)',
+        width:"60%",
+        alignItems:"center",
+        
+        borderRadius:10,
+        padding:10
+      }
 })

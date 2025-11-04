@@ -30,6 +30,14 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
                 />
         )
     }
+    if (variant === "header2"){
+        return (
+            <Text 
+                style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight: 500, fontSize:24}, style]}
+                {...props}
+                />
+        )
+    }
     if (variant === "tabText"){
         return (
             <Text 
@@ -72,7 +80,7 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
 
     return (
         <Text 
-            style={[{color: textColor, fontFamily: "Ubuntu-Light", fontWeight:300, fontSize: 14}, style]}
+            style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight:300, fontSize: 14}, style]}
             {...props}
             />
     )

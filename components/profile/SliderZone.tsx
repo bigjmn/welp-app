@@ -1,8 +1,10 @@
+import { usePrefs } from "@/hooks/usePrefs";
+import { useTheme } from "@/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
 import { Slider } from "@rneui/base";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Spacer, ThemedText, ThemedView } from "../ui";
-
 const ADVENTURE_LEVELS = [
     "Least adventurous",
     "Adventure value one",
@@ -11,28 +13,104 @@ const ADVENTURE_LEVELS = [
     "adventure level 5"
 ]
 
+const PRICE_LEVELS = [
+    "I bought Gamestop at the worst possible time",
+    "You think I'm made of money?",
+    "normal",
+    "I'm not afraid to splash the cash",
+    "I don't want to see any plebs"
+]
+
 export default function SliderZone(){
+    const { colors } = useTheme()
+    const { preferUnseen, updatePreferUnseen, preferCheap, updatePreferCheap } = usePrefs()
     const [adventureVal, setAdventureVal] = useState(2)
 
-    const handleValueChange = (vc:number) => {
+    const handleUnseenChange = (vc:number) => {
         console.log(vc)
-        setAdventureVal(vc)
+        updatePreferUnseen(vc)
+    }
+
+    const handlePricerChange = (pc:number) => {
+        if (pc === preferCheap) return;
+        console.log("changing price pref 2")
+        updatePreferCheap(pc)
     }
 
     return (
         <ThemedView style={styles.container}>
-            <ThemedText>{ADVENTURE_LEVELS[adventureVal]}</ThemedText>
+            
+            {/* Adventure preference slider */}
+            <ThemedView style={styles.sliderHolder}>
+                <ThemedView style={styles.sliderType}>
+                    <Ionicons size={22} color={colors.iconColor} name="telescope-sharp" />
+                    <Spacer width={20} />
+                    <ThemedView style={styles.descriptHolder}>
+                        <ThemedText variant="tabText">Adventure preference</ThemedText>
+                        <ThemedText>Preference for seeing new things vs. old favorites</ThemedText>
+                    </ThemedView>
+                </ThemedView>
+                
+            <ThemedView style={styles.slider}>
+                <Slider 
+                    style={{width:"100%"}}
+                    value={preferUnseen}
+                    onValueChange={handleUnseenChange}
+
+                    maximumValue={4}
+                    minimumValue={0}
+                    step={1}
+                    minimumTrackTintColor={colors.secondary}
+                    maximumTrackTintColor={colors.secondary}
+                    trackStyle={{ height: 5 }}
+                    thumbStyle={{height: 20, width: 20, borderRadius:"50%", backgroundColor: 'blue' }}
+                    
+                    // thumbProps={{
+                    //     children: (
+                    //         <Icon
+                    //         name="heartbeat"
+                    //         type="font-awesome"
+                    //         size={20}
+                    //         reverse
+                    //         containerStyle={{ bottom: 20, right: 20 }}
+                    //         color="green"
+                    //         />
+                    //     ),
+                    // }}
+                />
+                <Spacer height={2} />
+            
+            <ThemedView style={{display:'flex',flexDirection:'row',justifyContent:'center',width:"100%"}}>
+                <ThemedText variant="italicStyle">{ADVENTURE_LEVELS[preferUnseen]}</ThemedText>
+
+            </ThemedView>
+            </ThemedView>
+            
+            </ThemedView>
+
+            {/* Price preference slider */}
             <Spacer height={10} />
+            <ThemedView style={styles.sliderHolder}>
+                <ThemedView style={styles.sliderType}>
+                    <Ionicons size={22} color={colors.iconColor} name="pricetags-sharp" />
+                    <Spacer width={20} />
+                    <ThemedView style={styles.descriptHolder}>
+                        <ThemedText variant="tabText">Pricing preference</ThemedText>
+                        <ThemedText>Preference for inexpensive vs fancy</ThemedText>
+                    </ThemedView>
+                </ThemedView>
             <ThemedView style={styles.slider}>
             <Slider 
                 style={{width:"100%"}}
-                value={adventureVal}
-                onValueChange={handleValueChange}
+                value={preferCheap}
+                onValueChange={handlePricerChange}
 
                 maximumValue={4}
                 minimumValue={0}
                 step={1}
-                trackStyle={{ height: 5, backgroundColor: 'transparent' }}
+                minimumTrackTintColor={colors.secondary}
+                    maximumTrackTintColor={colors.secondary}
+                trackStyle={{ height: 5 }}
                 thumbStyle={{ height: 20, width: 20, backgroundColor: 'blue' }}
                 
                 // thumbProps={{
@@ -48,13 +126,11 @@ export default function SliderZone(){
                 //     ),
                 // }}
             />
-            <ThemedView style={{display:'flex',flexDirection:'row',justifyContent:'space-between', width:"100%", height:4}}>
-                <ThemedView style={{width:4, backgroundColor:"green"}} />
-                <ThemedView style={{width:4, backgroundColor:"green"}} />
-                <ThemedView style={{width:4, backgroundColor:"green"}} />
-                <ThemedView style={{width:4, backgroundColor:"green"}} />
-                <ThemedView style={{width:4, backgroundColor:"green"}} />
+            
+            
             </ThemedView>
+            <Spacer height={2} />
+            <ThemedText variant="italicStyle">{PRICE_LEVELS[preferCheap]}</ThemedText>
             </ThemedView>
         </ThemedView>
     )
@@ -71,5 +147,18 @@ const styles = StyleSheet.create({
     },
     slider: {
         width:"60%"
+    },
+    sliderType: {
+        width: "100%",
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    sliderHolder: {
+        width:"100%",
+        alignItems:"center"
+    },
+    descriptHolder:{
+        
     }
 })

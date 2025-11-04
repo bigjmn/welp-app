@@ -1,20 +1,26 @@
+import { usePrefs } from "@/hooks/usePrefs"
+import { useTheme } from "@/hooks/useTheme"
+import { CATEGORIES_DICT } from "@/utils/preferencemaker"
 import { Checkbox } from "expo-checkbox"
 import { StyleSheet } from "react-native"
-
-import { usePrefs } from "@/hooks/usePrefs"
-import { CATEGORIES_DICT } from "@/utils/preferencemaker"
-import { ThemedText, ThemedView } from "../ui"
+import { Spacer, ThemedText, ThemedView } from "../ui"
 
 export default function PreferenceBoxes(){
+    const { colors } = useTheme()
     const { foodPrefs, updateFoodPrefs } = usePrefs() 
 
     return (
         <ThemedView style={styles.container}>
-            <ThemedText variant="header">Include Categories</ThemedText>
+            
+            <ThemedText variant="tabText">Category Filters</ThemedText>
+            
+            <Spacer height={5} />
             <ThemedView style={styles.boxholder}>
             {Object.entries(foodPrefs).map(([k,va],v) => (
                 <ThemedView style={{width:"45%",display:'flex',flexDirection:'row',alignItems:'center',marginLeft:15}} key={v}>
                     <Checkbox 
+                        color={colors.secondary}
+
                         style={styles.checkbox}
                         value={va}
                         onValueChange={()=>updateFoodPrefs(k)}
@@ -47,8 +53,8 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
         gap:4,
         rowGap:12,
-        borderColor:'white',
-        borderWidth:1,
+        // borderColor:'white',
+        // borderWidth:1,
         justifyContent:'center',
         alignItems:'center'
         

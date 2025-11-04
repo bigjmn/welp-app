@@ -12,7 +12,8 @@ interface ResultData {
     url: string; 
     rating: number;
     displayPhone: string;
-    categories: string[]
+    categories: string[];
+    price?: number;
 }
 
 interface SearchResponse {
@@ -47,4 +48,4 @@ interface ConfirmMessage {
     errMessage: string|null;
 }
 
-type TextVariant = "regular"|"tabText"|"header"|"promptText"|"title"|"dateText"|"voteAnswer"|"italicStyle"
+type TextVariant = "regular"|"tabText"|"header"|"header2"|"promptText"|"title"|"dateText"|"voteAnswer"|"italicStyle"

@@ -11,7 +11,7 @@ import Animated, {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import { Spacer, ThemedText, ThemedView } from '../ui';
+import { PrimaryChip, Spacer, ThemedText, ThemedView } from '../ui';
 const RegularContent = ({result}:ResultCardProps) => {
     const { name, imageUrl } = result 
     const { colors } = useTheme()
@@ -22,7 +22,15 @@ const RegularContent = ({result}:ResultCardProps) => {
             source={imageUrl}
             contentFit='cover'
         />
-      <ThemedText variant='header'>{name}</ThemedText>
+      <ThemedText variant='header2'>{name}</ThemedText>
+      <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center',backgroundColor:"transparent"}}>
+        {result.categories.map((rescat, i) => (
+            <PrimaryChip
+                name={rescat}
+                key={i}
+                />
+        ))}
+      </ThemedView>
       <ThemedText variant='italicStyle'>(flip for details)</ThemedText>
     </ThemedView>
   );

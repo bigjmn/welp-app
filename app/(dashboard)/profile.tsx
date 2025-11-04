@@ -1,7 +1,7 @@
 import OrderHistory from "@/components/profile/OrderHistory";
 import PreferenceBoxes from "@/components/profile/PreferenceBoxes";
 import SliderZone from "@/components/profile/SliderZone";
-import { PrimaryButton, Spacer, ThemedView, UnderlinedButton } from "@/components/ui";
+import { DividingLine, PrimaryButton, Spacer, ThemedView, UnderlinedButton } from "@/components/ui";
 import { usePrefs } from "@/hooks/usePrefs";
 import { useState } from 'react';
 import { StyleSheet } from "react-native";
@@ -32,8 +32,10 @@ export default function Profile(){
 function PreferenceSecion(){
     const { preferUnseen, updatePreferUnseen, savePrefs } = usePrefs()
     return (
-        <ThemedView>
+        <ThemedView style={styles.preferencesHolder}>
+            <Spacer height={5} />
             <PreferenceBoxes />
+            <DividingLine />
             <Spacer height={30} />
             {/* <ThemedView style={styles.unseenSwitch}>
                 <Switch 
@@ -45,7 +47,9 @@ function PreferenceSecion(){
                     <ThemedText>Prefer Unseen</ThemedText>
             </ThemedView> */}
             <SliderZone />
+            <Spacer height={10} />
             <PrimaryButton name="save preferences" onPress={savePrefs} />
+            <Spacer height={5} />
         </ThemedView>
     )
 }
@@ -60,7 +64,8 @@ function HistorySection(){
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        alignItems:'center'
+        alignItems:'center',
+        padding:5
     },
     tabsHolder: {
         display:'flex',
@@ -78,5 +83,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:"100%",
         justifyContent:"center"
+    },
+    preferencesHolder: {
+        justifyContent:"space-between",
+        flex:1
     }
 })

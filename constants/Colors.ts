@@ -7,6 +7,7 @@ export const Colors = {
     primary: commonColors.primary,
     
     
+    
     dark: {
       primary: commonColors.primary,
       secondary: commonColors.secondary,
@@ -17,7 +18,7 @@ export const Colors = {
       navBackground: "#201e2b",
       iconColor: "#9591a5",
       iconColorFocused: "#fff",
-      uiBackground: "#323232",
+      uiBackground: 'rgba(255,255,255,.1)',
       
     },
     light: {
@@ -30,7 +31,7 @@ export const Colors = {
       navBackground: "#e8e7ef",
       iconColor: "#686477",
       iconColorFocused: "#201e2b",
-      uiBackground: "#dfdfdf",
+      uiBackground: 'rgba(0,0,0,.1)',
      
     },
   }

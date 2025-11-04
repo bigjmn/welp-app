@@ -1,3 +1,4 @@
+import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { formatTimestamp } from "@/utils/formatters";
 import { FlatList, StyleSheet } from "react-native";
@@ -24,14 +25,19 @@ export default function OrderHistory(){
 
 function HistoryTile({orderDetail}:{orderDetail:HistoryItem}){
     const timestring = formatTimestamp(orderDetail.timestamp)
+    const { colors } = useTheme()
 
     return (
-        <ThemedView style={styles.tileStyle}>
+        <ThemedView style={[styles.tileStyle, {backgroundColor: colors.uiBackground}]}>
             <ThemedView style={styles.tileLeft}>
                 <ThemedText>{timestring}</ThemedText>
-                <ThemedText>{orderDetail.name}</ThemedText>
+                
             </ThemedView>
-            <ThemedView>
+            <ThemedView style={{flex:1, backgroundColor:"transparent"}}>
+                <ThemedText>{orderDetail.name}</ThemedText>
+
+            </ThemedView>
+            <ThemedView style={{backgroundColor:"transparent"}}>
                 {(orderDetail.review && orderDetail.review === "Pretty dece!") ? <ThemedText style={{color:"green"}}>Pretty dece!</ThemedText> : 
                 (orderDetail.review && orderDetail.review === "Eh.") ? <ThemedText style={{color:"red"}}>Eh.</ThemedText> : null }
             </ThemedView>
@@ -53,11 +59,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         width:"100%",
         justifyContent:'space-between',
-        alignItems:'center'
+        alignItems:'center',
+        padding:8
     },
     tileLeft: {
         display:'flex',
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        padding:12,
+        backgroundColor:"transparent"
     }
 })
