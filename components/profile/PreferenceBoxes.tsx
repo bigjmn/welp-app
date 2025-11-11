@@ -12,7 +12,7 @@ export default function PreferenceBoxes(){
     return (
         <ThemedView style={styles.container}>
             
-            <ThemedText variant="tabText">Category Filters</ThemedText>
+            <ThemedText variant="medium">Category Filters</ThemedText>
             
             <Spacer height={5} />
             <ThemedView style={styles.boxholder}>

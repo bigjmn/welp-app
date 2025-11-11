@@ -3,7 +3,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { Slider } from "@rneui/base";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Spacer, ThemedText, ThemedView } from "../ui";
 const ADVENTURE_LEVELS = [
     "Least adventurous",
@@ -41,17 +41,17 @@ export default function SliderZone(){
         <ThemedView style={styles.container}>
             
             {/* Adventure preference slider */}
-            <ThemedView style={styles.sliderHolder}>
-                <ThemedView style={styles.sliderType}>
+            <View style={[styles.sliderHolder]}>
+                <View style={styles.sliderType}>
                     <Ionicons size={22} color={colors.iconColor} name="telescope-sharp" />
                     <Spacer width={20} />
-                    <ThemedView style={styles.descriptHolder}>
-                        <ThemedText variant="tabText">Adventure preference</ThemedText>
+                    <View style={styles.descriptHolder}>
+                        <ThemedText variant="medium">Adventure preference</ThemedText>
                         <ThemedText>Preference for seeing new things vs. old favorites</ThemedText>
-                    </ThemedView>
-                </ThemedView>
+                    </View>
+                </View>
                 
-            <ThemedView style={styles.slider}>
+            <View style={styles.slider}>
                 <Slider 
                     style={{width:"100%"}}
                     value={preferUnseen}
@@ -63,7 +63,7 @@ export default function SliderZone(){
                     minimumTrackTintColor={colors.secondary}
                     maximumTrackTintColor={colors.secondary}
                     trackStyle={{ height: 5 }}
-                    thumbStyle={{height: 20, width: 20, borderRadius:"50%", backgroundColor: 'blue' }}
+                    thumbStyle={{height: 20, width: 20, borderRadius:"50%", backgroundColor: colors.primary }}
                     
                     // thumbProps={{
                     //     children: (
@@ -80,13 +80,13 @@ export default function SliderZone(){
                 />
                 <Spacer height={2} />
             
-            <ThemedView style={{display:'flex',flexDirection:'row',justifyContent:'center',width:"100%"}}>
-                <ThemedText variant="italicStyle">{ADVENTURE_LEVELS[preferUnseen]}</ThemedText>
+            <View style={{display:'flex',flexDirection:'row',justifyContent:'center',width:"100%"}}>
+                <ThemedText variant="italic">{ADVENTURE_LEVELS[preferUnseen]}</ThemedText>
 
-            </ThemedView>
-            </ThemedView>
+            </View>
+            </View>
             
-            </ThemedView>
+            </View>
 
             {/* Price preference slider */}
             <Spacer height={10} />
@@ -95,7 +95,7 @@ export default function SliderZone(){
                     <Ionicons size={22} color={colors.iconColor} name="pricetags-sharp" />
                     <Spacer width={20} />
                     <ThemedView style={styles.descriptHolder}>
-                        <ThemedText variant="tabText">Pricing preference</ThemedText>
+                        <ThemedText variant="medium">Pricing preference</ThemedText>
                         <ThemedText>Preference for inexpensive vs fancy</ThemedText>
                     </ThemedView>
                 </ThemedView>
@@ -111,7 +111,7 @@ export default function SliderZone(){
                 minimumTrackTintColor={colors.secondary}
                     maximumTrackTintColor={colors.secondary}
                 trackStyle={{ height: 5 }}
-                thumbStyle={{ height: 20, width: 20, backgroundColor: 'blue' }}
+                thumbStyle={{ height: 20, width: 20, backgroundColor: colors.primary }}
                 
                 // thumbProps={{
                 //     children: (
@@ -130,7 +130,7 @@ export default function SliderZone(){
             
             </ThemedView>
             <Spacer height={2} />
-            <ThemedText variant="italicStyle">{PRICE_LEVELS[preferCheap]}</ThemedText>
+            <ThemedText variant="italic">{PRICE_LEVELS[preferCheap]}</ThemedText>
             </ThemedView>
         </ThemedView>
     )

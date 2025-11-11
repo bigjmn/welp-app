@@ -1,6 +1,5 @@
 import { StyleProp, Text, TextStyle } from 'react-native';
 // import { defaultStyle, italicStyle, voteAnswerStyle } from '';
-import { defaultStyle, italicStyle, voteAnswerStyle } from '@/constants/TextTypeStyles';
 import { useTheme } from '../../hooks/useTheme';
 interface ThemedTextProps {
     style?: StyleProp<TextStyle>; 
@@ -16,7 +15,7 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
     if (variant === "title"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Bold", fontWeight: 700, fontSize:70}, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Bold", fontWeight: 700, fontSize:70}, style]}
                 {...props}
                 />
         )
@@ -25,7 +24,7 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
     if (variant === "header"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight: 500, fontSize:30}, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Medium", fontWeight: 500, fontSize:30}, style]}
                 {...props}
                 />
         )
@@ -33,44 +32,57 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
     if (variant === "header2"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight: 500, fontSize:24}, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Medium", fontWeight: 500, fontSize:24}, style]}
                 {...props}
                 />
         )
     }
-    if (variant === "tabText"){
+    if (variant === "medium"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight: 500, fontSize:16}, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Medium", fontWeight: 500, fontSize:16}, style]}
                 {...props}
                 />
         )
     }
-    if (variant === "dateText"){
+    if (variant === "light"){
         return (
             <Text 
-                style={[{color: textColor, fontFamily: "Ubuntu-Light", fontWeight: 300, fontSize:10}, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Light", fontWeight: 300, fontSize:16}, style]}
                 {...props}
                 />
         )
     }
-    if (variant === "promptText"){
+    if (variant === "strong"){
         return (
             <Text 
-                style={[{color: textColor}, defaultStyle, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Bold", fontWeight: 700, fontSize:16}, style]}
                 {...props}
                 />
         )
     }
-    if (variant === "voteAnswer"){
-        return <Text style={[voteAnswerStyle, style]}
-        {...props}
-        />
-    }
-    if (variant === "italicStyle"){
+    if (variant === "regular"){
         return (
             <Text 
-                style={[{color: textColor}, italicStyle, style]}
+                style={[{color: textColor, fontFamily: "Roboto-Regular", fontWeight: 400, fontSize:16}, style]}
+                {...props}
+                />
+        )
+    }
+    if (variant === "soft"){
+        return (
+            <Text 
+                style={[{color: textColor, fontFamily: "Roboto-Medium", fontSize:16, opacity:.5}, style]}
+                {...props}
+                />
+        )
+    }
+    
+    
+    if (variant === "italic"){
+        return (
+            <Text 
+                style={[{color: textColor, fontFamily: "Roboto-LightItalic", fontSize:16}, style]}
                 {...props}
                 />
         )
@@ -80,7 +92,7 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
 
     return (
         <Text 
-            style={[{color: textColor, fontFamily: "Ubuntu-Medium", fontWeight:300, fontSize: 14}, style]}
+            style={[{color: textColor, fontFamily: "Roboto-Regular", fontWeight:400, fontSize: 16}, style]}
             {...props}
             />
     )

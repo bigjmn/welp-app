@@ -78,7 +78,7 @@ export default function ReviewModal({result,closeModal}:ReviewModalProps){
             >
                 {result && <ThemedView style={styles.container}>
                     <ThemedView style={[styles.modalView, {backgroundColor: 'rgba(13,13,13,1)', borderColor:colors.text, borderWidth:2}]}>
-                        <ThemedText variant="tabText">How was {result.name}?</ThemedText>
+                        <ThemedText variant="medium">How was {result.name}?</ThemedText>
                         <Spacer height={20} />
                         <ThemedView style={{width: "100%", justifyContent:"center", gap: 8, alignItems: "center"}}>
                             {/* <PrimaryButton style={{width: "40%", borderRadius:10, backgroundColor:'rgba(255,255,255,.2)'}} onPress={() => reviewHandler("Pretty dece!")} name="Pretty dece!" /> */}

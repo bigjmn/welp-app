@@ -22,14 +22,18 @@ const RegularContent = ({result}:ResultCardProps) => {
             source={imageUrl}
             contentFit='cover'
         />
+        <ThemedView style={regularContentStyles.content}>
+
+        
       <ThemedText variant='header2'>{name}</ThemedText>
-      <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center',backgroundColor:"transparent"}}>
+      <ThemedView style={{display:'flex', width:"100%", flexWrap:"wrap",flexDirection:'row',alignItems:'center',backgroundColor:"transparent"}}>
         {result.categories.map((rescat, i) => (
             <PrimaryChip
                 name={rescat}
                 key={i}
                 />
         ))}
+      </ThemedView>
       </ThemedView>
       <ThemedText variant='italicStyle'>(flip for details)</ThemedText>
     </ThemedView>
@@ -43,11 +47,13 @@ const regularContentStyles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   image: {
-        flex:1,
+        
         
         width: "100%",
+        height: 240,
         
         borderTopLeftRadius:10,
         borderTopRightRadius:10
@@ -55,6 +61,10 @@ const regularContentStyles = StyleSheet.create({
   text: {
     color: Colors.primary,
   },
+  content: {
+    padding: 20,
+    gap: 16,
+  }
 });
 
 const FlippedContent = ({result}:ResultCardProps) => {

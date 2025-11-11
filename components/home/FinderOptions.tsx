@@ -33,7 +33,7 @@ export default function FinderOptions(){
                     <ThemedView style={{display:'flex',flex:1,flexDirection:'row', alignItems:"center", justifyContent:"center",padding:1,height:180}}>
                         <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center', padding:6}}>
                             <Ionicons size={16} style={{padding:3}} name="location-sharp" color={colors.iconColor}/>
-                            <ThemedText style={{}} numberOfLines={1} variant="tabText">{usingCurrLocation ? "Your Location" : searchLocation?.formattedAddress}</ThemedText>
+                            <ThemedText style={{}} numberOfLines={1} variant="medium">{usingCurrLocation ? "Your Location" : searchLocation?.formattedAddress}</ThemedText>
 
                         </ThemedView>
                         
@@ -41,7 +41,7 @@ export default function FinderOptions(){
                         {/* <ThemedText > | </ThemedText> */}
                         <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center', padding:6}}>
                             <Ionicons size={16} style={{padding:3}} name="time-sharp" color={colors.iconColor} />
-                            <ThemedText variant="tabText">{usingNow ? "Now" : moment(searchTime).format("h:mm a")}</ThemedText>
+                            <ThemedText variant="medium">{usingNow ? "Now" : moment(searchTime).format("h:mm a")}</ThemedText>
 
                         </ThemedView>
                         
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         overflow:'visible',
         alignItems: "center",
         justifyContent:"center",
-        padding: 16
+        padding: 8
     },
     activeIcon: {backgroundColor:"#000", borderRadius:"50%", padding:4, margin:4},
     inactiveIcon: { borderRadius:"50%", padding:4, margin:4}

@@ -16,13 +16,18 @@ export default function RootLayout() {
   
 
   const [loaded, error] = useFonts({
-		'Ubuntu-Regular': require('../assets/fonts/Ubuntu-Regular.ttf'),
-		'Ubuntu-Bold': require('../assets/fonts/Ubuntu-Bold.ttf'),
-		'Ubuntu-Medium': require('../assets/fonts/Ubuntu-Medium.ttf'),
-		'Ubuntu-Light': require('../assets/fonts/Ubuntu-Light.ttf'),
-		'Ubuntu-LightItalic': require('../assets/fonts/Ubuntu-LightItalic.ttf'),
-		'Ubuntu-BoldItalic': require('../assets/fonts/Ubuntu-BoldItalic.ttf'),
-		'Ubuntu-MediumItalic': require('../assets/fonts/Ubuntu-MediumItalic.ttf'),
+    'Roboto-Bold': require('../assets/fonts/MobileRoboto/Roboto-Bold.ttf'),
+    'Roboto-Light': require('../assets/fonts/MobileRoboto/Roboto-Light.ttf'),
+    'Roboto-LightItalic': require('../assets/fonts/MobileRoboto/Roboto-LightItalic.ttf'),
+    'Roboto-Medium': require('../assets/fonts/MobileRoboto/Roboto-Medium.ttf'),
+    'Roboto-Regular': require('../assets/fonts/MobileRoboto/Roboto-Regular.ttf')
+		// 'Ubuntu-Regular': require('../assets/fonts/Ubuntu-Regular.ttf'),
+		// 'Ubuntu-Bold': require('../assets/fonts/Ubuntu-Bold.ttf'),
+		// 'Ubuntu-Medium': require('../assets/fonts/Ubuntu-Medium.ttf'),
+		// 'Ubuntu-Light': require('../assets/fonts/Ubuntu-Light.ttf'),
+		// 'Ubuntu-LightItalic': require('../assets/fonts/Ubuntu-LightItalic.ttf'),
+		// 'Ubuntu-BoldItalic': require('../assets/fonts/Ubuntu-BoldItalic.ttf'),
+		// 'Ubuntu-MediumItalic': require('../assets/fonts/Ubuntu-MediumItalic.ttf'),
 	})
   return (
     <ThemeProvider>

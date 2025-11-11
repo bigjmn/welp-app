@@ -32,6 +32,8 @@ const createSearch = (serviceType:ServiceType, latitude:number, longitude:number
     return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&sort_by=best_match&limit=20`
 
 }
+const SUGGESTION_ENDPOINT = "https://api.yelp.com/ai/chat/v2"
+
 export const useWelpSearch = () => {
     const apiKey = process.env.EXPO_PUBLIC_YELP_API
 
@@ -39,7 +41,8 @@ export const useWelpSearch = () => {
 
     const headers:Record<string, string> = {"accept": "application/json", "authorization": "Bearer "+apiKey};
     const { usingCurrLocation, location, searchLocation, usingNow, searchTime } = useUser()
-    
+
+
 
     const getResults = async (serviceType:ServiceType, searchTerm:string) => {
         const prefString = catString()
@@ -62,6 +65,8 @@ export const useWelpSearch = () => {
                     name: b["name"],
                     imageUrl: b["image_url"],
                     displayAddress: b["location"]["display_address"].join(),
+                    latitude: b["coordinates"]["latitude"],
+                    longitude: b["coordinates"]["longitude"],
                     url: b["url"],
                     rating: b["rating"],
                     displayPhone: b["display_phone"],
@@ -91,6 +96,7 @@ export const useWelpSearch = () => {
 
 
     }
+    
 
     return { getResults }
 }

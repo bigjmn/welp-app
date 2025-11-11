@@ -9,6 +9,8 @@ interface ResultData {
     name: string; 
     imageUrl: string; 
     displayAddress: string; 
+    latitude:string;
+    longitude:string;
     url: string; 
     rating: number;
     displayPhone: string;
@@ -48,4 +50,4 @@ interface ConfirmMessage {
     errMessage: string|null;
 }
 
-type TextVariant = "regular"|"tabText"|"header"|"header2"|"promptText"|"title"|"dateText"|"voteAnswer"|"italicStyle"
+type TextVariant = "regular"|"strong"|"header"|"header2"|"soft"|"title"|"italic"|"light"|"medium"

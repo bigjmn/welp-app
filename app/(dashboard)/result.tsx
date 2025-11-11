@@ -1,5 +1,5 @@
-import PlaceCard from "@/components/results/CardFlip";
 import DrumRoll from "@/components/results/DrumRoll";
+import NewResultCard from "@/components/results/NewResultCard";
 import ReviewModal from "@/components/results/ReviewModal";
 import { PrimaryButton, Spacer, ThemedText, ThemedView } from "@/components/ui";
 import { usePrefs } from "@/hooks/usePrefs";
@@ -29,7 +29,7 @@ export default function Result(){
     const { serviceType, searchInput }:{serviceType:ServiceType,searchInput:string} = useLocalSearchParams()
     const { getResults } = useWelpSearch()
     const { user } = useUser()
-    const { preferUnseen } = usePrefs()
+    const { preferUnseen, preferCheap } = usePrefs()
 
     const [showCard, setShowCard] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
@@ -61,7 +61,7 @@ export default function Result(){
             if (resultOb.errMessage !== null){
                 throw Error(resultOb.errMessage)
             }
-            const shuffledResults = shufflePrefs(orderHistory, resultOb.resultList, preferUnseen)
+            const shuffledResults = shufflePrefs(orderHistory, resultOb.resultList, preferUnseen, preferCheap)
             setWeightedResults(shuffledResults)
         }).catch((e) => console.log(e))
         .finally(() => {
@@ -96,9 +96,9 @@ export default function Result(){
         <ThemedView style={styles.screen}>
             <ReviewModal result={result} closeModal={closeModal} />
             
-            <Spacer height={40} />
-            <ThemedText variant="header">Welp, you're getting...</ThemedText>
-            <Spacer height={40} />
+            <Spacer height={10} />
+            <ThemedText variant="header2">Welp, you're getting...</ThemedText>
+            <Spacer height={10} />
             {(!showCard) ? (
                 <DrumRoll 
                     continueAnimating={isLoading} 
@@ -106,7 +106,7 @@ export default function Result(){
                     />
                 ) : (weightedResults && weightedResults.length > resultIdx) ? (
                     <>
-                    <DataFetchedCard unlockButtons={showButtonsDelayed} result={weightedResults[resultIdx]} />
+                    <DataFetchedCard unlockButtons={showButtonsDelayed} result={weightedResults[resultIdx]} serviceType={serviceType} />
                     <ButtonsColumn visible={showButtons} handleReject={handleReject} handleAccept={handleAccept} />
                     </>
                 ) : 
@@ -119,7 +119,7 @@ export default function Result(){
 }
 
 
-function DataFetchedCard({ unlockButtons, result }: { unlockButtons: () => void, result:ResultData }) {
+function DataFetchedCard({ unlockButtons, result, serviceType }: { unlockButtons: () => void, result:ResultData, serviceType:ServiceType }) {
   const rotation = useSharedValue(-180);
   const scale = useSharedValue(0.4);
   const { colors } = useTheme()
@@ -149,8 +149,9 @@ function DataFetchedCard({ unlockButtons, result }: { unlockButtons: () => void,
   }));
 
   return (
-    <Animated.View style={[styles.card, animatedStyle, {backgroundColor: colors.uiBackground}]}>
-      <PlaceCard result={result} />
+    <Animated.View style={[styles.card, animatedStyle]}>
+      <NewResultCard result={result} serviceType={serviceType} />
+      {/* <CardActionButton result={result} serviceType={serviceType} /> */}
     </Animated.View>
   );
 }
@@ -240,15 +241,17 @@ function SlidingButton({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    alignItems:"center"
+
     
-    alignItems: "center",
+    
     
   },
   card: {
-    width: 320,
-    height: 350,
+    // width: 320,
+    // height: 350,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,.2)',
+    // backgroundColor: 'rgba(255,255,255,.2)',
     // backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
     backfaceVisibility: "hidden",
   },
   buttonsWrapper: {
-    marginTop: 24,
+    marginTop: 6,
     width: "70%",
   },
   buttonWrapper: {

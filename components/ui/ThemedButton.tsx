@@ -48,7 +48,7 @@ export function UnderlinedButton({style, name, isActive, ...props}:UnderlinedBut
     style={({pressed}) => [styles.ulineBtn, pressed && styles.pressed, style]}
     {...props}
     >
-      <ThemedText variant="tabText" style={{color: isActive ? colors.secondary : colors.text, textDecorationLine:"underline" }}>
+      <ThemedText variant="medium" style={{color: isActive ? colors.secondary : colors.text, textDecorationLine:"underline" }}>
         {name}
       </ThemedText>
 

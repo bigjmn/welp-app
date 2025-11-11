@@ -48,7 +48,7 @@ function PreferenceSecion(){
             </ThemedView> */}
             <SliderZone />
             <Spacer height={10} />
-            <PrimaryButton name="save preferences" onPress={savePrefs} />
+            <PrimaryButton style={{width:"80%", alignSelf:"center"}} name="save preferences" onPress={savePrefs} />
             <Spacer height={5} />
         </ThemedView>
     )
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     },
     section: {
         padding:3,
-        flex:1
+        flex:1,
     },
     unseenSwitch: {
         display:'flex',
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
     },
     preferencesHolder: {
         justifyContent:"space-between",
-        flex:1
+        flex:1,
     }
 })

@@ -1,14 +1,16 @@
 import FinderOptions from '@/components/home/FinderOptions';
 import { TileGrid } from '@/components/home/TileGrid';
-import { Spacer, ThemedText, ThemedView } from '@/components/ui';
+import { Spacer, ThemedLogo, ThemedText, ThemedView } from '@/components/ui';
 import { StyleSheet } from "react-native";
+
 export default function Index() {
   
   return (
     <ThemedView style={styles.container}>
-      <Spacer height={40} />
-      <ThemedText variant={"title"}>Welp.</ThemedText>
-      <ThemedText variant={"italicStyle"}>No options. Just answers.</ThemedText>
+      <Spacer height={20} />
+      <ThemedLogo />
+      {/* <ThemedText variant={"title"}>Welp.</ThemedText> */}
+      <ThemedText variant={"italic"}>No options. Just answers.</ThemedText>
       <FinderOptions />
         
 
@@ -17,7 +19,7 @@ export default function Index() {
       <TileGrid />
       {/* <PrimaryButton name="increase" onPress={handlePress} />
       <ThemedText>{myCount}</ThemedText> */}
-      <Spacer /> 
+      
       
       
 
