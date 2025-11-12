@@ -10,7 +10,7 @@ export default function Index() {
       <Spacer height={20} />
       <ThemedLogo />
       {/* <ThemedText variant={"title"}>Welp.</ThemedText> */}
-      <ThemedText variant={"italic"}>No options. Just answers.</ThemedText>
+      <ThemedText variant="italic">No options. Just answers.</ThemedText>
       <FinderOptions />
         
 

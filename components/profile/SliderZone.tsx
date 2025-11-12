@@ -47,7 +47,7 @@ export default function SliderZone(){
                     <Spacer width={20} />
                     <View style={styles.descriptHolder}>
                         <ThemedText variant="medium">Adventure preference</ThemedText>
-                        <ThemedText>Preference for seeing new things vs. old favorites</ThemedText>
+                        <ThemedText>Preference for new things vs. old favorites</ThemedText>
                     </View>
                 </View>
                 
@@ -142,7 +142,8 @@ function PrefSlider(){
 
 const styles = StyleSheet.create({
     container: {
-        alignItems:"center"
+        alignItems:"center",
+        width:"100%"
 
     },
     slider: {
@@ -156,7 +157,8 @@ const styles = StyleSheet.create({
     },
     sliderHolder: {
         width:"100%",
-        alignItems:"center"
+        alignItems:"center",
+        padding:5
     },
     descriptHolder:{
         

@@ -5,5 +5,6 @@ export default function DashboardLayout(){
         <Tabs.Screen name="result" options={{tabBarStyle: {display:"none"}}} />
         <Tabs.Screen name="profile" options={{tabBarStyle:{display:'none'}}} />
         <Tabs.Screen name="about" options={{tabBarStyle:{display:'none'}}} />
+        <Tabs.Screen name="review" options={{tabBarStyle:{display:'none'}}} />
     </Tabs>)
 }

@@ -1,13 +1,12 @@
 import DrumRoll from "@/components/results/DrumRoll";
 import NewResultCard from "@/components/results/NewResultCard";
-import ReviewModal from "@/components/results/ReviewModal";
 import { PrimaryButton, Spacer, ThemedText, ThemedView } from "@/components/ui";
 import { usePrefs } from "@/hooks/usePrefs";
 import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { useWelpSearch } from "@/hooks/useWelpSearch";
 import { shufflePrefs } from "@/utils/randomizers";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import Animated, {
@@ -22,7 +21,6 @@ import Animated, {
 // }
 
 export default function Result(){
-    const [result, setResult] = useState<ResultData|null>(null)
     const [weightedResults, setWeightedResults] = useState<ResultData[]|null>(null)
     const [resultIdx, setResultIdx] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
@@ -31,16 +29,19 @@ export default function Result(){
     const { user } = useUser()
     const { preferUnseen, preferCheap } = usePrefs()
 
+    const router = useRouter()
+
     const [showCard, setShowCard] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
 
-  const showButtonsDelayed = useCallback(() => {
-    setShowButtons(true);
-  }, []);
+    const showButtonsDelayed = useCallback(() => {
+        setShowButtons(true);
+    }, []);
+    const goToReview = () => {}
 
-  useEffect(() => {
-    console.log(serviceType)
-  }, [serviceType])
+    useEffect(() => {
+        console.log(serviceType)
+    }, [serviceType])
 
   
 
@@ -80,21 +81,18 @@ export default function Result(){
     }
     const handleAccept = () => {
         if (weightedResults && weightedResults[resultIdx]){
-            setResult(weightedResults[resultIdx])
+            const {id, name} = weightedResults[resultIdx]
+            router.replace({pathname: '/review', params:{id, name}})
         }
     }
     const handleCountdownFinished = useCallback(() => {
     setShowCard(true);
     setShowButtons(false);
   }, []);
-    const closeModal = () => {
-        setResult(null)
-
-    }
+    
 
     return (
         <ThemedView style={styles.screen}>
-            <ReviewModal result={result} closeModal={closeModal} />
             
             <Spacer height={10} />
             <ThemedText variant="header2">Welp, you're getting...</ThemedText>

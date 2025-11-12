@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     },
 
     boxholder:{
-        padding:6,
+        padding:5,
         
         flexDirection:'row',
         flexWrap:'wrap',
@@ -56,13 +56,15 @@ const styles = StyleSheet.create({
         // borderColor:'white',
         // borderWidth:1,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        
         
     },
     checkbox:{
         margin:5,
         marginLeft:20,
-        marginRight:10
+        marginRight:10,
+        maxWidth:"40%"
 
     }
 })
