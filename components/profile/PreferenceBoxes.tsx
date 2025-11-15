@@ -19,7 +19,7 @@ export default function PreferenceBoxes(){
             {Object.entries(foodPrefs).map(([k,va],v) => (
                 <ThemedView style={{width:"45%",display:'flex',flexDirection:'row',alignItems:'center',marginLeft:15}} key={v}>
                     <Checkbox 
-                        color={colors.secondary}
+                        color={colors.primary}
 
                         style={styles.checkbox}
                         value={va}

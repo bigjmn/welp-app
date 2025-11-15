@@ -20,7 +20,8 @@ export default function RootLayout() {
     'Roboto-Light': require('../assets/fonts/MobileRoboto/Roboto-Light.ttf'),
     'Roboto-LightItalic': require('../assets/fonts/MobileRoboto/Roboto-LightItalic.ttf'),
     'Roboto-Medium': require('../assets/fonts/MobileRoboto/Roboto-Medium.ttf'),
-    'Roboto-Regular': require('../assets/fonts/MobileRoboto/Roboto-Regular.ttf')
+    'Roboto-Regular': require('../assets/fonts/MobileRoboto/Roboto-Regular.ttf'),
+    'UberMove-Medium': require('../assets/fonts/UberMove-Medium.ttf')
 		// 'Ubuntu-Regular': require('../assets/fonts/Ubuntu-Regular.ttf'),
 		// 'Ubuntu-Bold': require('../assets/fonts/Ubuntu-Bold.ttf'),
 		// 'Ubuntu-Medium': require('../assets/fonts/Ubuntu-Medium.ttf'),

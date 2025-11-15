@@ -1,86 +1,110 @@
 import { useTheme } from '@/hooks/useTheme';
 import { useUser } from '@/hooks/useUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from 'react-native-google-places-textinput';
 import { ThemedView } from '../ui';
-interface AddressSearchProps {
-    canSearch: boolean
-}
+
 const AddressSearch = () => {
     const placesApi = "AIzaSyAxR8PtmkqEcpCrwSGr-AESqQFhbprCPTI"
     const [inputState, setInputState] = useState('')
-    const {colors} = useTheme()
-    const { searchLocation, handleSearchLocation, usingCurrLocation} = useUser()
+    const { colors, theme } = useTheme()
+    const { searchLocation, handleSearchLocation, usingCurrLocation } = useUser()
 
-  const handlePlaceSelect = (place) => {
-    console.log('Selected place:', place);
-    console.log(place.details)
-    setInputState(place.details.formattedAddress)
-    console.log(place.details.formattedAddress)
-    
-    handleSearchLocation(place?.details)
-    
-    
-  };
-  const handleTextChange = (tval:string) => {
-    if (tval === ""){
-        setInputState("Your Location")
-    }
-  }
-  const customStyles:GooglePlacesTextInputStyles = {
-    container: {
-        
-        
-        overflow:'visible',
-      width: '100%',
-      marginHorizontal: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.9)'
+    const handlePlaceSelect = (place) => {
+        console.log('Selected place:', place);
+        console.log(place.details)
+        const address = place.details.formattedAddress;
+        // Truncate if too long (approx 25 chars for 170px width)
+        const truncatedAddress = address.length > 25 ? address.substring(0, 22) + '...' : address;
+        setInputState(truncatedAddress)
+        console.log(place.details.formattedAddress)
 
-
-      
-    },
-    input: {
-      
-      height: 45,
-      borderColor: '#ccc',
-      borderRadius: 8,
-      width:170,
-      overflow:"scroll",
-      pointerEvents:usingCurrLocation? "none" : "auto",
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      color: colors.text,
-      
-
-      
-    },
-    suggestionsContainer: {
-      
-      maxHeight: 250,
-      overflow:'visible',
-      position:'absolute',
-      
-      left:0
-    },
-    suggestionItem: {
-      padding: 15,
-    },
-    suggestionText: {
-      main: {
-        fontSize: 16,
-        color: '#333',
-      },
-      secondary: {
-        fontSize: 14,
-        color: '#666',
+        handleSearchLocation(place?.details)
+    };
+    useEffect(() => {
+      if (searchLocation){
+        const address = searchLocation.formattedAddress;
+        // Truncate if too long when disabled
+        const truncatedAddress = address.length > 25 ? address.substring(0, 22) + '...' : address;
+        setInputState(truncatedAddress)
       }
-    },
-    loadingIndicator: {
-      color: '#999',
-    },
-    placeholder: {
-      color: '#999',
-    }
-  };
+
+    }, [])
+
+    // const handleTextChange = (tval: string) => {
+    //     if (tval === "") {
+    //         setInputState("Your Location")
+    //     }
+    // }
+
+    const customStyles: GooglePlacesTextInputStyles = {
+        container: {
+            overflow: 'visible',
+            width: '100%',
+            marginHorizontal: 0,
+            backgroundColor: 'transparent',
+            zIndex: 1000,
+        },
+        input: {
+            height: 45,
+            borderWidth: 1,
+            borderColor: usingCurrLocation ? colors.iconColor : colors.primary,
+            borderRadius: 8,
+            width: 170,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            pointerEvents: usingCurrLocation ? "none" : "auto",
+            backgroundColor: usingCurrLocation
+                ? (theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)')
+                : (theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.9)'),
+            color: usingCurrLocation ? colors.iconColor : colors.text,
+            opacity: usingCurrLocation ? 0.5 : 1,
+        },
+        suggestionsContainer: {
+            maxHeight: 250,
+            overflow: 'visible',
+            position: 'absolute',
+            top: 50,
+            left: 0,
+            right: 0,
+            backgroundColor: theme === 'dark' ? '#1F2937' : '#FFFFFF',
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: theme === 'dark' ? '#374151' : '#E5E7EB',
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+            zIndex: 9999,
+        },
+        suggestionItem: {
+            padding: 15,
+            borderBottomWidth: 1,
+            borderBottomColor: theme === 'dark' ? '#374151' : '#E5E7EB',
+            backgroundColor: theme === 'dark' ? '#1F2937' : '#FFFFFF',
+        },
+        suggestionText: {
+            main: {
+                fontSize: 16,
+                color: theme === 'dark' ? '#F9FAFB' : '#111827',
+                fontWeight: '500',
+            },
+            secondary: {
+                fontSize: 14,
+                color: theme === 'dark' ? '#9CA3AF' : '#6B7280',
+            }
+        },
+        loadingIndicator: {
+            color: colors.primary,
+        },
+        placeholder: {
+            color: colors.iconColor,
+        }
+    };
 
   return (
     
@@ -92,16 +116,8 @@ const AddressSearch = () => {
       placeHolderText='Search'
       value={inputState}
       fetchDetails={true}
-      
-      
-      onTextChange={handleTextChange}
       style={customStyles}
       minCharsToFetch={4}
-      
-      
-      
-      
-      
     />
     
     

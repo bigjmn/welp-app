@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     width: "70%",
   },
   buttonWrapper: {
-    marginTop: 12,
+    marginTop: 4,
   },
   button: {
     paddingVertical: 14,

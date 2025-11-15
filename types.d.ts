@@ -50,4 +50,4 @@ interface ConfirmMessage {
     errMessage: string|null;
 }
 
-type TextVariant = "regular"|"strong"|"header"|"header2"|"soft"|"title"|"italic"|"light"|"medium"
+type TextVariant = "regular"|"strong"|"header"|"header2"|"soft"|"title"|"italic"|"light"|"medium"|"uber"

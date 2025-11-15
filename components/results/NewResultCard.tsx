@@ -1,6 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
 import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { PrimaryChip, ThemedText, ThemedView } from "../ui";
 import OpenUberButton from "./OpenUberButton";
 interface ResultDataProps {
@@ -20,15 +20,19 @@ export default function NewResultCard({ result, serviceType }:ResultDataProps){
                     <ThemedText style={styles.resName} variant="strong">{name}</ThemedText>
 
                 </ThemedView>
-                <ThemedView style={styles.categoriesHolder}>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.categoriesHolder}
+                    contentContainerStyle={styles.categoriesContent}
+                >
                     {categories.map((rescat, i) => (
-                                <PrimaryChip
-                                    name={rescat}
-                                    key={i}
-                                    />
-                            ))}
-
-                </ThemedView>
+                        <PrimaryChip
+                            name={rescat}
+                            key={i}
+                        />
+                    ))}
+                </ScrollView>
                 <ThemedView style={styles.phoneHolder}>
                     <ThemedText variant="soft">Phone</ThemedText>
                     <ThemedText>{displayPhone}</ThemedText>
@@ -51,8 +55,9 @@ export default function NewResultCard({ result, serviceType }:ResultDataProps){
 
 const styles =StyleSheet.create({
     container: {
-        width: 360
-        
+        width: 360,
+        borderRadius:16,
+        elevation:4
 
     },
     image: {
@@ -65,7 +70,7 @@ const styles =StyleSheet.create({
 
     content: {
         padding:20,
-        gap:16,
+        gap:12,
         width:"100%",
         backgroundColor: "transparent"
 
@@ -84,10 +89,13 @@ const styles =StyleSheet.create({
 
     },
     categoriesHolder: {
-        width:"100%",
+        width: "100%",
+        flexGrow: 0,
+    },
+    categoriesContent: {
         flexDirection: "row",
-        flexWrap: "wrap",
-        backgroundColor: "transparent"
+        gap: 8,
+        paddingRight: 20,
     },
     phoneHolder: {
         width:"100%",

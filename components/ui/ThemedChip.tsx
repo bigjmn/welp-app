@@ -11,6 +11,7 @@ export function PrimaryChip({ style, name, ...props} : PrimaryChipProps) {
         <Chip
             title={name}
             color={commonColors.primary}
+            containerStyle={{margin:4}}
             
             {...props}
             />

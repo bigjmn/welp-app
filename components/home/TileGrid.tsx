@@ -11,7 +11,7 @@ import Animated, {
     withSequence,
     withTiming,
 } from "react-native-reanimated";
-import { PrimaryButton, Spacer, ThemedTextInput, ThemedView } from "../ui";
+import { PrimaryButton, Spacer, ThemedText, ThemedTextInput, ThemedView } from "../ui";
 
 const SERVICES: ServiceType[] = ["Delivery", "Restaurant", "Bar", "Search"];
 
@@ -308,6 +308,7 @@ export function TileGrid() {
                                             source={getServiceIcon(service, false)}
                                             style={{ width: "100%", height: "100%" }}
                                         />
+                                        <ThemedText variant="italic" style={{position:'absolute',bottom:3, textAlign:"center",width:"100%"}}>{service}</ThemedText>
                                     </View>
                                     <Animated.View style={[styles.imageWrapper, { zIndex: 3 }, topImageSeen(i)]}>
                                         <Image
@@ -332,14 +333,22 @@ export function TileGrid() {
 
             <Spacer height={20} />
             {serviceType === "Search" ? (
-                <ThemedView style={{ height: 40, width: "100%", flexDirection: "row", justifyContent: "center" }}>
-                    <ThemedTextInput value={searchInput} onChangeText={setSearchInput} />
+                <ThemedView style={styles.searchSection}>
+                    <ThemedTextInput
+                        value={searchInput}
+                        onChangeText={setSearchInput}
+                        placeholder="What are you looking for?"
+                        placeholderTextColor={colors.iconColor}
+                        style={styles.searchInput}
+                    />
                 </ThemedView>
             ) : (
-                <Spacer height={40} />
+                <Spacer height={45} />
             )}
-            <Spacer height={10} />
+            <Spacer height={16} />
+            <ThemedView style={styles.searchSection}>
             <PrimaryButton style={{ width: "80%" }} name="Let's Go!" onPress={goToResults} />
+            </ThemedView>
         </ThemedView>
     );
 }
@@ -380,6 +389,19 @@ const styles = StyleSheet.create({
         position: "absolute",
         inset: 0,
         borderRadius: 14,
-        
+    },
+    searchSection: {
+        width: "100%",
+        paddingHorizontal: 20,
+        alignItems:"center"
+    },
+    searchInput: {
+        width: "80%",
+        height: 45,
+        alignSelf:"center",
+        borderWidth: 1,
+        padding: 12,
+        fontSize: 16,
+        textAlignVertical: 'center',
     }
 })

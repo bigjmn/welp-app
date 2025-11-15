@@ -77,6 +77,14 @@ const ThemedText = ({ style, title = false, variant="regular", ...props}: Themed
                 />
         )
     }
+    if (variant === "uber"){
+        return (
+            <Text 
+                style={[{color: textColor, fontFamily: "UberMove-Medium", fontSize:22}, style]}
+                {...props}
+                />
+        )
+    }
     
     
     if (variant === "italic"){

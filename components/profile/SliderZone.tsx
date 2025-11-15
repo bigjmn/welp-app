@@ -6,11 +6,11 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Spacer, ThemedText, ThemedView } from "../ui";
 const ADVENTURE_LEVELS = [
-    "Least adventurous",
-    "Adventure value one",
+    "Do I look like Magellan to you?",
+    "My middle name is 'Cautious'",
     "normal",
-    "hell yeah baby",
-    "adventure level 5"
+    "My middle name is 'Danger.' Also my last name.",
+    "Never establish a pattern. That's how they find you."
 ]
 
 const PRICE_LEVELS = [
@@ -60,10 +60,10 @@ export default function SliderZone(){
                     maximumValue={4}
                     minimumValue={0}
                     step={1}
-                    minimumTrackTintColor={colors.secondary}
-                    maximumTrackTintColor={colors.secondary}
+                    minimumTrackTintColor={colors.primary}
+                    maximumTrackTintColor={colors.primary}
                     trackStyle={{ height: 5 }}
-                    thumbStyle={{height: 20, width: 20, borderRadius:"50%", backgroundColor: colors.primary }}
+                    thumbStyle={{height: 20, width: 20, borderRadius:"50%", backgroundColor: "black", borderWidth:1,borderColor:colors.primary }}
                     
                     // thumbProps={{
                     //     children: (
@@ -108,10 +108,10 @@ export default function SliderZone(){
                 maximumValue={4}
                 minimumValue={0}
                 step={1}
-                minimumTrackTintColor={colors.secondary}
-                    maximumTrackTintColor={colors.secondary}
+                minimumTrackTintColor={colors.primary}
+                    maximumTrackTintColor={colors.primary}
                 trackStyle={{ height: 5 }}
-                thumbStyle={{ height: 20, width: 20, backgroundColor: colors.primary }}
+                thumbStyle={{ height: 20, width: 20, backgroundColor: "black", borderWidth:1,borderColor:colors.primary }}
                 
                 // thumbProps={{
                 //     children: (

@@ -18,7 +18,7 @@ const createSearch = (serviceType:ServiceType, latitude:number, longitude:number
         return `https://api.yelp.com/v3/transactions/delivery/search?latitude=${latitude}&longitude=${longitude}&${timing_string}&${prefString}&sort_by=best_match&limit=20`
     }
     if (serviceType === "Bar"){
-        return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&categories=[bars]&${timing_string}&sort_by=best_match&limit=20`
+        return `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&categories=[bars]&term=bar&${timing_string}&sort_by=best_match&limit=20`
     }
     if (serviceType === "Search"){
         let sTerm = ""
@@ -46,8 +46,8 @@ export const useWelpSearch = () => {
 
     const getResults = async (serviceType:ServiceType, searchTerm:string) => {
         const prefString = catString()
-        const latitude = (usingCurrLocation && location) ? location.coords.latitude : searchLocation!.latitude
-        const longitude = (usingCurrLocation && location) ? location.coords.longitude : searchLocation!.longitude 
+        const latitude = (usingCurrLocation && location) ? location.coords.latitude : searchLocation!.location.latitude
+        const longitude = (usingCurrLocation && location) ? location.coords.longitude : searchLocation!.location.longitude 
         const timingString = usingNow ? null : searchTime ? searchTime.valueOf() : null 
         const searchEndpoint = createSearch(serviceType, latitude, longitude, timingString, searchTerm, prefString)
 

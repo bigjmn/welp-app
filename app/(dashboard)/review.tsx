@@ -40,11 +40,13 @@ export default function ReviewScreen(){
         if (!orderTime || !id || logPending){
             return
         }
+        router.replace('/')
 
     }
     useEffect(() => {
         if (id){
             setOrderTime(Date.now())
+            setReviewState(null)
             console.log("recorded from result screen")
 
         }
@@ -53,7 +55,14 @@ export default function ReviewScreen(){
     return (
         <ThemedView style={styles.container}>
         <ThemedView style={[styles.content]}>
+            <View style={{width:"90%"}}>
             <ThemedText variant="header2">How was {name}?</ThemedText>
+            </View>
+            <View style={{width:"90%"}}>
+                <ThemedText variant="italic">
+                    Reviews and comments are private and will not affect the search algorithm for any other user.
+                </ThemedText>
+            </View>
             <ThemedView style={styles.reviewButtonsHolder}>
                 {/* good review */}
                 <Pressable onPress={() => setReviewState("Pretty dece!")} style={[styles.reviewButton, {backgroundColor:colors.uiBackground}]}>
@@ -76,12 +85,15 @@ export default function ReviewScreen(){
                 onChangeText={setAddedComment}
                 value={addedComment}
                 placeholder="Optional, but helps the AI learn your preferences"
+                placeholderTextColor={colors.iconColor}
              />
              </View>
-             <PrimaryButton style={{width:"100%"}} disabled={(!reviewState || logPending)} name="Submit" onPress={handleReview} />
-             <ThemedButton style={{width:"100%"}} disabled={logPending} onPress={handleSkip}>
-                <ThemedText>Skip</ThemedText>
+             <View style={{width:"90%"}}>
+             <PrimaryButton style={{width:"100%", opacity: (!reviewState || logPending) ? .5 : 1}} disabled={(!reviewState || logPending)} name="Submit" onPress={handleReview} />
+             <ThemedButton style={{width:"100%",backgroundColor:"white",borderWidth:1,borderColor:colors.primary}} disabled={logPending} onPress={handleSkip}>
+                <ThemedText style={{color:colors.primary}}>Skip</ThemedText>
              </ThemedButton>
+             </View>
 
         </ThemedView>
         </ThemedView>
@@ -104,18 +116,18 @@ const styles = StyleSheet.create({
         
         alignItems:'center',
         padding:5,
-        gap:16,
+        gap:20,
         width:320
     },
     reviewButton: {
-        width: "40%",
+        width: "45%",
         flexDirection:'row',
-        height:50,
-        padding:6,
+        height:60,
+        padding:20,
         justifyContent:'center',
         alignItems:'center',
         gap:5,
-        borderRadius:16
+        borderRadius:8
     },
     reviewButtonsHolder: {
         width:"90%",
@@ -124,7 +136,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         backgroundColor:"transparent"
     },
-    inputHolder: {},
+    inputHolder: {
+        width:"90%"
+    },
     label: {
         marginBottom:5
     }

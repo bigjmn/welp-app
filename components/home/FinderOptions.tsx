@@ -28,29 +28,29 @@ export default function FinderOptions(){
 
     return (
         <ThemedView style={styles.container}>
-            
-            <Pressable onPress={handleModalOpen} style={{flex:1,height:60}}>
-                    <ThemedView style={{display:'flex',flex:1,flexDirection:'row', alignItems:"center", justifyContent:"center",padding:1,height:180}}>
-                        <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center', padding:6}}>
-                            <Ionicons size={16} style={{padding:3}} name="location-sharp" color={colors.iconColor}/>
-                            <ThemedText style={{}} numberOfLines={1} variant="medium">{usingCurrLocation ? "Your Location" : searchLocation?.formattedAddress}</ThemedText>
 
-                        </ThemedView>
-                        
-                        {/* <Spacer width={22} /> */}
-                        {/* <ThemedText > | </ThemedText> */}
-                        <ThemedView style={{display:'flex',flexDirection:'row',alignItems:'center', padding:6}}>
-                            <Ionicons size={16} style={{padding:3}} name="time-sharp" color={colors.iconColor} />
-                            <ThemedText variant="medium">{usingNow ? "Now" : moment(searchTime).format("h:mm a")}</ThemedText>
-
-                        </ThemedView>
-                        
-                        
-
+            <Pressable onPress={handleModalOpen} style={styles.pressable}>
+                <ThemedView style={styles.contentRow}>
+                    <ThemedView style={styles.locationSection}>
+                        <Ionicons size={16} style={styles.icon} name="location-sharp" color={colors.iconColor}/>
+                        <ThemedText
+                            style={styles.locationText}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            variant="medium"
+                        >
+                            {usingCurrLocation ? "Your Location" : (searchLocation?.formattedAddress || "Set Location")}
+                        </ThemedText>
                     </ThemedView>
-                </Pressable>
 
-            
+                    <ThemedView style={styles.timeSection}>
+                        <Ionicons size={16} style={styles.icon} name="time-sharp" color={colors.iconColor} />
+                        <ThemedText variant="medium">{usingNow ? "Now" : moment(searchTime).format("h:mm a")}</ThemedText>
+                    </ThemedView>
+                </ThemedView>
+            </Pressable>
+
+
             <SearchModal isOpen={isOpen} handleClose={handleClose} />
         </ThemedView>
     )
@@ -58,15 +58,60 @@ export default function FinderOptions(){
 
 const styles = StyleSheet.create({
     container: {
-        
         flexDirection: "row",
-        position:'relative',
+        position: 'relative',
         width: "100%",
-        overflow:'visible',
+        overflow: 'visible',
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         padding: 8
     },
-    activeIcon: {backgroundColor:"#000", borderRadius:"50%", padding:4, margin:4},
-    inactiveIcon: { borderRadius:"50%", padding:4, margin:4}
+    pressable: {
+        flex: 1,
+        height: 60
+    },
+    contentRow: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 1,
+        height: 180,
+        gap: 8
+    },
+    locationSection: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 6,
+        flex: 1,
+        maxWidth: '60%',
+        minWidth: 120
+    },
+    locationText: {
+        flex: 1,
+        maxWidth: '100%'
+    },
+    timeSection: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 6,
+        minWidth: 80
+    },
+    icon: {
+        padding: 3
+    },
+    activeIcon: {
+        backgroundColor: "#000",
+        borderRadius: 50,
+        padding: 4,
+        margin: 4
+    },
+    inactiveIcon: {
+        borderRadius: 50,
+        padding: 4,
+        margin: 4
+    }
 })
