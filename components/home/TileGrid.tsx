@@ -368,14 +368,18 @@ const styles = StyleSheet.create({
     cellPress: {
         flex: 1,
         overflow: "hidden",
-        borderRadius: 16
+        borderRadius: 12
     },
     cellBase: {
         flex: 1,
-        borderWidth: 2,
-        borderColor: "#D1D5DB",
-        borderRadius: 16,
-        zIndex: 4
+        borderWidth: 1.5,
+        borderColor: "#0F4C75",
+        borderRadius: 12,
+        zIndex: 4,
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
     },
     imageWrapper: {
         width: "100%",
@@ -388,7 +392,7 @@ const styles = StyleSheet.create({
     fill: {
         position: "absolute",
         inset: 0,
-        borderRadius: 14,
+        borderRadius: 10,
     },
     searchSection: {
         width: "100%",
@@ -397,11 +401,12 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         width: "80%",
-        height: 45,
+        height: 48,
         alignSelf:"center",
-        borderWidth: 1,
-        padding: 12,
+        borderWidth: 2,
+        padding: 14,
         fontSize: 16,
         textAlignVertical: 'center',
+        borderRadius: 12,
     }
 })

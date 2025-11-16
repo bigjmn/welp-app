@@ -64,11 +64,17 @@ const styles = StyleSheet.create({
         overflow: 'visible',
         alignItems: "center",
         justifyContent: "center",
-        padding: 8
+        padding: 10
     },
     pressable: {
         flex: 1,
-        height: 60
+        height: 56,
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOpacity: 0.18,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 3 },
+        elevation: 4,
     },
     contentRow: {
         display: 'flex',
@@ -76,9 +82,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "center",
-        padding: 1,
-        height: 180,
-        gap: 8
+        padding: 6,
+        height: 56,
+        gap: 10,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(15,76,117,0.15)',
     },
     locationSection: {
         display: 'flex',

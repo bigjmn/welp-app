@@ -56,21 +56,27 @@ export default function NewResultCard({ result, serviceType }:ResultDataProps){
 const styles =StyleSheet.create({
     container: {
         width: 360,
-        borderRadius:16,
-        elevation:4
+        borderRadius:12,
+        elevation:12,
+        shadowColor: '#000',
+        shadowOpacity: 0.25,
+        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 6 },
+        borderWidth: 1,
+        borderColor: 'rgba(187,134,252,0.2)',
 
     },
     image: {
         width: "100%",
-        height:240,
-        borderTopLeftRadius:16,
-        borderTopRightRadius:16
+        height:220,
+        borderTopLeftRadius:12,
+        borderTopRightRadius:12
 
     },
 
     content: {
         padding:20,
-        gap:12,
+        gap:14,
         width:"100%",
         backgroundColor: "transparent"
 
