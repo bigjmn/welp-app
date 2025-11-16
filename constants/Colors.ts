@@ -1,37 +1,37 @@
 export const commonColors = {
-    primary: "#6254e1ff",
-    secondary: "#00c1a9",
-    warning: "#cc475a",
+    primary: "#0F4C75",
+    secondary: "#BB86FC",
+    warning: "#F4A261",
 }
 export const Colors = {
     primary: commonColors.primary,
-    
-    
-    
+
+
+
     dark: {
       primary: commonColors.primary,
       secondary: commonColors.secondary,
       warning: commonColors.warning,
-      text: "#d4d4d4",
-      title: "#fff",
-      background: "#000",
-      navBackground: "#201e2b",
-      iconColor: "#9591a5",
-      iconColorFocused: "#fff",
-      uiBackground: 'rgba(255,255,255,.1)',
-      
+      text: "#E0E0E0",
+      title: "#FFFFFF",
+      background: "#0A0E27",
+      navBackground: "#1B2838",
+      iconColor: "#8B95A5",
+      iconColorFocused: "#BB86FC",
+      uiBackground: 'rgba(15,76,117,.25)',
+
     },
     light: {
       primary: commonColors.primary,
       secondary: commonColors.secondary,
       warning: commonColors.warning,
-      text: "#000",
-      title: "#000",
-      background: "#ffffff",
-      navBackground: "#e8e7ef",
-      iconColor: "#686477",
-      iconColorFocused: "#201e2b",
-      uiBackground: 'rgba(0,0,0,.1)',
-     
+      text: "#1A1A1A",
+      title: "#0A0E27",
+      background: "#F8F9FA",
+      navBackground: "#E3F2FD",
+      iconColor: "#546E7A",
+      iconColorFocused: "#0F4C75",
+      uiBackground: 'rgba(15,76,117,.1)',
+
     },
   }
