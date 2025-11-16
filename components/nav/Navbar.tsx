@@ -33,9 +33,9 @@ export default function Navbar(){
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.routebuttonsholder}>
-                <Ionicons.Button color={pathname === '/' ? colors.iconColorFocused : colors.iconColor} name={pathname === '/' ? "home-sharp" : "home-outline"} onPress={() => router.replace('/')} size={ICONSIZE} style={styles.iconstyle} />
-                <Ionicons.Button color={pathname === '/profile' ? colors.iconColorFocused : colors.iconColor} name={pathname === '/profile' ? "person-sharp" : "person-outline"} onPress={() => router.replace('/profile')} size={ICONSIZE} style={styles.iconstyle} />
-                <Ionicons.Button color={pathname === '/about' ? colors.iconColorFocused : colors.iconColor} name={pathname === '/about' ? "information-circle-sharp" : "information-circle-outline"} onPress={() => router.replace("/about")} size={ICONSIZE} style={styles.iconstyle} />
+                <Ionicons.Button color={pathname === '/' ? colors.iconColorFocused : colors.iconColor} name="home-sharp" onPress={() => router.replace('/')} size={ICONSIZE} style={styles.iconstyle} />
+                <Ionicons.Button color={pathname === '/profile' ? colors.iconColorFocused : colors.iconColor} name="person-sharp" onPress={() => router.replace('/profile')} size={ICONSIZE} style={styles.iconstyle} />
+                <Ionicons.Button color={pathname === '/about' ? colors.iconColorFocused : colors.iconColor} name="information-circle-sharp" onPress={() => router.replace("/about")} size={ICONSIZE} style={styles.iconstyle} />
             </ThemedView>
             <ThemedView style={styles.routebuttonsholder}>
                 <DarkModeToggle />

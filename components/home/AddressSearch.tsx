@@ -10,6 +10,13 @@ const AddressSearch = () => {
     const { colors, theme } = useTheme()
     const { searchLocation, handleSearchLocation, usingCurrLocation } = useUser()
 
+    const handleValChange = (vc:string) => {
+        if (vc === ""){
+            console.log("empty!")
+            handleSearchLocation()
+        }
+    }
+
     const handlePlaceSelect = (place) => {
         console.log('Selected place:', place);
         console.log(place.details)
@@ -106,7 +113,7 @@ const AddressSearch = () => {
         }
     };
 
-  return (
+  return !placesApi ? null : (
     
     <ThemedView style={{backgroundColor:'transparent'}}>
        
@@ -118,6 +125,7 @@ const AddressSearch = () => {
       fetchDetails={true}
       style={customStyles}
       minCharsToFetch={4}
+      onTextChange={handleValChange}
     />
     
     

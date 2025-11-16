@@ -34,6 +34,8 @@ export function UserProvider({ children } : {children : React.ReactNode}){
     const handleSearchLocation = (sl?:PlaceDetailsFields)=> {
       if (sl){
         setSearchLocation(sl)
+      } else {
+        setSearchLocation(null)
       }
       
     }
