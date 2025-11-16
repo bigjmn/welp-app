@@ -106,7 +106,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
                 style={{
                     width:"100%",
                     opacity: (!reviewState || logPending) ? .5 : 1,
-                    backgroundColor: saveSuccess ? '#10B981' : undefined
+                    backgroundColor: saveSuccess ? '#10B981' : "black"
                 }}
                 disabled={(!reviewState || logPending)}
                 name={logPending ? "Saving..." : saveSuccess ? "Saved!" : "Save"}
