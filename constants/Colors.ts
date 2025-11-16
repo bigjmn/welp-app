@@ -9,16 +9,16 @@ export const Colors = {
 
 
     dark: {
-      primary: commonColors.primary,
-      secondary: commonColors.secondary,
+      primary: "#3A7CA5",
+      secondary: "#BB86FC",
       warning: commonColors.warning,
-      text: "#E0E0E0",
+      text: "#F0F0F0",
       title: "#FFFFFF",
-      background: "#0A0E27",
-      navBackground: "#1B2838",
-      iconColor: "#8B95A5",
+      background: "#0D1117",
+      navBackground: "#1C2128",
+      iconColor: "#A0A8B0",
       iconColorFocused: "#BB86FC",
-      uiBackground: 'rgba(15,76,117,.25)',
+      uiBackground: 'rgba(58,124,165,.3)',
 
     },
     light: {
