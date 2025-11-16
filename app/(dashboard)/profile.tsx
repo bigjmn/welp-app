@@ -36,7 +36,7 @@ function PreferenceSecion(){
             <Spacer height={5} />
             <PreferenceBoxes />
             <DividingLine />
-            <Spacer height={30} />
+            <Spacer height={20} />
             {/* <ThemedView style={styles.unseenSwitch}>
                 <Switch 
                     value={preferUnseen}
@@ -47,9 +47,9 @@ function PreferenceSecion(){
                     <ThemedText>Prefer Unseen</ThemedText>
             </ThemedView> */}
             <SliderZone />
-            <Spacer height={10} />
+            
             <PrimaryButton style={{width:"80%", alignSelf:"center"}} name="save preferences" onPress={savePrefs} />
-            <Spacer height={5} />
+            {/* <Spacer height={5} /> */}
         </ThemedView>
     )
 }

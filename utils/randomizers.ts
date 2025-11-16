@@ -41,10 +41,10 @@ const PRIOR_DECAY = 0.9;               // base prior: 0.9^rank (sorted best→wo
   for (const h of orderHistory || []){
     const rec = agg.get(h.id) || {count:0, rated:0, good:0}
     rec.count+=1;
-    if (h.review === "Pretty dece!") {
+    if (h.review && h.review.rating === "Pretty dece!") {
         rec.rated += 1
         rec.good += 1
-    } else if (h.review === "Eh."){
+    } else if (h.review && h.review.rating === "Eh."){
         rec.rated += 1
     }
     agg.set(h.id, rec)

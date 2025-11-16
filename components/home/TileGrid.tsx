@@ -308,7 +308,7 @@ export function TileGrid() {
                                             source={getServiceIcon(service, false)}
                                             style={{ width: "100%", height: "100%" }}
                                         />
-                                        <ThemedText variant="italic" style={{position:'absolute',bottom:3, textAlign:"center",width:"100%"}}>{service}</ThemedText>
+                                        <ThemedText variant="italic" style={{position:'absolute',bottom:3, textAlign:"center",width:"100%", color: service === serviceType ? "white" : colors.text}}>{service}</ThemedText>
                                     </View>
                                     <Animated.View style={[styles.imageWrapper, { zIndex: 3 }, topImageSeen(i)]}>
                                         <Image

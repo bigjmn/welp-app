@@ -8,6 +8,7 @@ interface UserProps {
     errorMsg: string | null;
     user: User | null;
     logHistory: (resultId:string, resultName:string,timestamp:number,review?:Review)=>Promise<ConfirmMessage>,
+    modifyHistory: (orderId:string, newReview?:Review)=>Promise<ConfirmMessage>,
     searchLocation: PlaceDetailsFields | null,
     handleSearchLocation:(sl?:PlaceDetailsFields)=>void,
     usingCurrLocation:boolean,
@@ -19,7 +20,7 @@ interface UserProps {
 
 }
 
-export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:async()=>({errMessage:null}), searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
+export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:async()=>({errMessage:null}),modifyHistory:async()=>({errMessage:null}), searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
 
 export function UserProvider({ children } : {children : React.ReactNode}){
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -48,9 +49,32 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       setSearchTime(newdate)
     }
 
+    const modifyHistory = async (orderId:string, newReview?:Review) => {
+      try {
+        if (user){
+          const updatedUser:User = {...user, orderHistory: user.orderHistory.map((oh) => oh.oid === orderId ? ({...oh, review:newReview}) : oh)}
+          await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+          setUser(updatedUser)
+
+          return { errMessage: null } as ConfirmMessage
+        } else {
+          throw Error("no user!")
+        }
+      } catch (e){
+        let errMess = "error modifying review"
+        if (e instanceof Error){
+          errMess = e.message 
+        }
+        return {errMessage:errMess} as ConfirmMessage
+      }
+
+    }
+
     const logHistory = async (resultId:string,resultName:string, timestamp:number, review?: Review) => {
+      const gid = generateId()
       
       const historyItem:HistoryItem = {
+        oid:gid,
         id: resultId,
         timestamp,
         name: resultName, 
@@ -113,7 +137,7 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       }, [])
 
       return (
-        <UserContext.Provider value={{ location, errorMsg, user, logHistory, searchLocation,handleSearchLocation, usingCurrLocation,handleUsingCurrLocation,usingNow,handleUsingNow, searchTime, handleSearchTime }}>
+        <UserContext.Provider value={{ location, errorMsg, user, logHistory, modifyHistory, searchLocation,handleSearchLocation, usingCurrLocation,handleUsingCurrLocation,usingNow,handleUsingNow, searchTime, handleSearchTime }}>
             { children }
         </UserContext.Provider>
       )

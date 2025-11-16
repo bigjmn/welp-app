@@ -5,7 +5,7 @@ import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from 'react-native
 import { ThemedView } from '../ui';
 
 const AddressSearch = () => {
-    const placesApi = "AIzaSyAxR8PtmkqEcpCrwSGr-AESqQFhbprCPTI"
+    const placesApi = process.env.EXPO_PUBLIC_PLACES_API
     const [inputState, setInputState] = useState('')
     const { colors, theme } = useTheme()
     const { searchLocation, handleSearchLocation, usingCurrLocation } = useUser()

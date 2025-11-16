@@ -7,9 +7,9 @@ export default function DarkModeToggle(){
     return (
         <Pressable style={{padding:4}} onPress={toggleTheme}>
             {theme === "light" ? (
-                <Ionicons color={colors.iconColor} name="moon" size={26} />
-            ) : (
                 <Ionicons color={colors.iconColor} name="sunny" size={26} />
+            ) : (
+                <Ionicons color={colors.iconColor} name="moon" size={26} />
             )}
         </Pressable>
     )

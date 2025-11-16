@@ -30,8 +30,9 @@ interface Category {
     title: string;
     alias:string;
 }
-type Review = "Pretty dece!" | "Eh."
+type Rating = "Pretty dece!" | "Eh."
 interface HistoryItem {
+    oid: string;
     id:string;
     timestamp: number;
     name: string; 
@@ -39,6 +40,10 @@ interface HistoryItem {
 
 
 
+}
+interface Review {
+    rating:Rating;
+    addedComment?:string;
 }
 interface User {
     id: string; 

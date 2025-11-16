@@ -27,6 +27,8 @@ export default function SliderZone(){
     const [adventureVal, setAdventureVal] = useState(2)
 
     const handleUnseenChange = (vc:number) => {
+        if (vc === preferUnseen) return;
+        console.log('changing unseen pref')
         console.log(vc)
         updatePreferUnseen(vc)
     }
@@ -53,7 +55,7 @@ export default function SliderZone(){
                 
             <View style={styles.slider}>
                 <Slider 
-                    style={{width:"100%"}}
+                    style={{width:"60%"}}
                     value={preferUnseen}
                     onValueChange={handleUnseenChange}
 
@@ -80,9 +82,15 @@ export default function SliderZone(){
                 />
                 <Spacer height={2} />
             
-            <View style={{display:'flex',flexDirection:'row',justifyContent:'center',width:"100%"}}>
-                <ThemedText variant="italic">{ADVENTURE_LEVELS[preferUnseen]}</ThemedText>
-
+            <View style={styles.commentContainer}>
+                <ThemedText
+                    variant="italic"
+                    style={styles.commentText}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                >
+                    {ADVENTURE_LEVELS[preferUnseen]}
+                </ThemedText>
             </View>
             </View>
             
@@ -101,7 +109,7 @@ export default function SliderZone(){
                 </ThemedView>
             <ThemedView style={styles.slider}>
             <Slider 
-                style={{width:"100%"}}
+                style={{width:"60%"}}
                 value={preferCheap}
                 onValueChange={handlePricerChange}
 
@@ -129,8 +137,17 @@ export default function SliderZone(){
             
             
             </ThemedView>
-            <Spacer height={2} />
-            <ThemedText variant="italic">{PRICE_LEVELS[preferCheap]}</ThemedText>
+            {/* <Spacer height={2} /> */}
+            <View style={styles.commentContainer}>
+                <ThemedText
+                    variant="italic"
+                    style={styles.commentText}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                >
+                    {PRICE_LEVELS[preferCheap]}
+                </ThemedText>
+            </View>
             </ThemedView>
         </ThemedView>
     )
@@ -147,7 +164,8 @@ const styles = StyleSheet.create({
 
     },
     slider: {
-        width:"60%"
+        width:"100%",
+        alignItems:'center'
     },
     sliderType: {
         width: "100%",
@@ -161,6 +179,18 @@ const styles = StyleSheet.create({
         padding:5
     },
     descriptHolder:{
+
+    },
+    commentContainer: {
+        width: "100%",
+        height: 40,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    commentText: {
         
+        paddingHorizontal: 4,
     }
 })

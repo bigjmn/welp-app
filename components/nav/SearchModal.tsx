@@ -1,7 +1,7 @@
+import { useUser } from "@/hooks/useUser";
 import { Dimensions, Modal, StyleSheet } from "react-native";
 import { PrimaryButton, ThemedText, ThemedView } from "../ui";
 import SearchDetailForm from "./SearchDetailForm";
-import { useUser } from "@/hooks/useUser";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 interface SearchModalProps {
@@ -31,7 +31,7 @@ export default function SearchModal({ isOpen, handleClose }: SearchModalProps) {
                         <PrimaryButton
                             name="Apply"
                             onPress={handleClose}
-                            style={styles.button}
+                            style={[styles.button, {opacity: isDisabled ? .5 : 1}]}
                             disabled={isDisabled}
                         />
                     </ThemedView>

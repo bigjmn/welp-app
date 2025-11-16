@@ -2,69 +2,70 @@ import { PrimaryButton, ThemedButton, ThemedText, ThemedView } from "@/component
 import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
-export default function ReviewScreen(){
-    const [reviewState, setReviewState] = useState<Rating|null>(null) 
+import { Dimensions, Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
+export default function EditReviewModal({oid, closeModal}:{oid:string, closeModal:()=>void}){
+    const [name, setName] = useState("")
+    const [reviewState, setReviewState] = useState<Rating|null>(null)
     const [addedComment, setAddedComment] = useState("")
-    const [orderTime, setOrderTime] = useState<number|null>(null)
     const [logPending, setLogPending] = useState(false)
+    const [saveSuccess, setSaveSuccess] = useState(false)
 
-    const router = useRouter()
-
-    const { id, name }:{id:string, name:string} = useLocalSearchParams()
 
     const { colors } = useTheme()
+    
 
-    const { logHistory } = useUser()
+    const { modifyHistory, user } = useUser()
 
-    const handleReview = async () => {
-        if (!orderTime || !id || logPending || !reviewState){
+    useEffect(() => {
+        if (!oid || !user) return;
+        const historyItem = user.orderHistory.find(oh => oh.oid === oid)
+        if (!historyItem){
+            return
+        }
+        setName(historyItem.name)
+        if (historyItem.review){
+            setReviewState(historyItem.review.rating)
+            if (historyItem.review.addedComment){
+                setAddedComment(historyItem.review.addedComment)
+            }
+        }
+    }, [])
+
+    const handleSave = async () => {
+        if (!oid || logPending || !reviewState){
             return
         }
         const orderReview:Review = {rating:reviewState, addedComment:addedComment}
         setLogPending(true)
+        setSaveSuccess(false)
         try {
-            const {errMessage} = await logHistory(id, name, orderTime, orderReview)
+            const {errMessage} = await modifyHistory(oid, orderReview)
             if (errMessage !== null){
                 throw Error(errMessage)
             }
+            console.log("save successful")
+            setSaveSuccess(true)
             setLogPending(false)
-            router.replace('/')
-        } catch (e){
-            console.log(e)
+
+            // Close modal after brief delay to show success
+            setTimeout(() => {
+                closeModal()
+            }, 1000)
+
+        } catch (err){
+            console.log(err)
             setLogPending(false)
+            setSaveSuccess(false)
         }
     }
-    const handleSkip = async () => {
-        if (!orderTime || !id || logPending){
-            return
-        }
-        try {
-            const {errMessage} = await logHistory(id, name, orderTime)
-            if (errMessage !== null){
-                throw Error(errMessage)
-            }
-            setLogPending(false)
-            router.replace('/')
-        } catch (e){
-            console.log(e)
-            setLogPending(false)
-        }
-        
 
-    }
-    useEffect(() => {
-        if (id){
-            setOrderTime(Date.now())
-            setReviewState(null)
-            console.log("recorded from result screen")
 
-        }
-    }, [id])
 
     return (
+        <Modal transparent={true} visible={oid !== null} animationType="slide">
         <ThemedView style={styles.container}>
         <ThemedView style={[styles.content]}>
             <View style={{width:"90%"}}>
@@ -101,14 +102,24 @@ export default function ReviewScreen(){
              />
              </View>
              <View style={{width:"90%"}}>
-             <PrimaryButton style={{width:"100%", opacity: (!reviewState || logPending) ? .5 : 1}} disabled={(!reviewState || logPending)} name="Submit" onPress={handleReview} />
-             <ThemedButton style={{width:"100%",backgroundColor:"white",borderWidth:1,borderColor:colors.primary}} disabled={logPending} onPress={handleSkip}>
-                <ThemedText style={{color:colors.primary}}>Skip</ThemedText>
+             <PrimaryButton
+                style={{
+                    width:"100%",
+                    opacity: (!reviewState || logPending) ? .5 : 1,
+                    backgroundColor: saveSuccess ? '#10B981' : undefined
+                }}
+                disabled={(!reviewState || logPending)}
+                name={logPending ? "Saving..." : saveSuccess ? "Saved!" : "Save"}
+                onPress={handleSave}
+             />
+             <ThemedButton style={{width:"100%",backgroundColor:"white",borderWidth:1,borderColor:colors.primary}} disabled={logPending} onPress={closeModal}>
+                <ThemedText style={{color:colors.primary}}>Close</ThemedText>
              </ThemedButton>
              </View>
 
         </ThemedView>
         </ThemedView>
+        </Modal>
     )
 
 
@@ -118,6 +129,28 @@ export default function ReviewScreen(){
 
 }
 const styles = StyleSheet.create({
+    overlay: {
+        width: screenWidth,
+        height: screenHeight,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        padding: 20,
+    },
+    modalView: {
+        width: '100%',
+        maxWidth: 500,
+        maxHeight: screenHeight * 0.8,
+        borderRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 10,
+    },
     container: {
         flex:1,
         justifyContent:'center',
