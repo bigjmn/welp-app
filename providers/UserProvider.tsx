@@ -1,5 +1,6 @@
 import { generateId } from '@/utils/randomizers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import analytics from '@react-native-firebase/analytics';
 import * as Location from "expo-location";
 import React, { createContext, useEffect, useState } from "react";
 import { PlaceDetailsFields } from 'react-native-google-places-textinput';
@@ -130,6 +131,7 @@ export function UserProvider({ children } : {children : React.ReactNode}){
                     const newId = generateId()
                     const newUser:User = {id: newId, orderHistory:[]}
                     await AsyncStorage.setItem('user', JSON.stringify(newUser))
+                    await analytics().logEvent('newuser', {userid: newId})
                     setUser(newUser)
                 }
             } catch (e) {

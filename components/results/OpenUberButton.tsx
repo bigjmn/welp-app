@@ -1,12 +1,16 @@
 import { useTheme } from '@/hooks/useTheme';
+import { useUser } from '@/hooks/useUser';
+import analytics from '@react-native-firebase/analytics';
 import * as Linking from 'expo-linking';
 import { Pressable } from 'react-native';
 import { ThemedText, ThemedView } from '../ui';
 const uberButtonBlack = require("@/assets/uberbuttonblack.png")
 export default function OpenUberButton({result}:ResultCardProps){
+    const { user } = useUser()
 
     const { theme } = useTheme()
     const { name, latitude, longitude } = result 
+
 
     const [bgColor, textColor] = (theme === "light") ? ["black", "white"] : ["white", "black"]
 
@@ -17,6 +21,7 @@ export default function OpenUberButton({result}:ResultCardProps){
 
 
     const getUber = async () => {
+        await analytics().logEvent('uber_api_used', {userid: user?.id})
         const supported = await Linking.canOpenURL(url);
 
         if (supported) {

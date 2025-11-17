@@ -16,7 +16,6 @@
         "ITSAppUsesNonExemptEncryption": false
       }
     },
-
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
@@ -75,6 +74,13 @@
         "projectId": "0ce3bbb4-579b-4655-a2b8-0ae2f44d2097"
       }
     },
-    "owner": "bigjmn"
+    "owner": "bigjmn",
+    "android": {
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.bigjmn.welp"
+    }
   }
 }

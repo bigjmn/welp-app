@@ -6,6 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { useWelpSearch } from "@/hooks/useWelpSearch";
 import { shufflePrefs } from "@/utils/randomizers";
+import analytics from '@react-native-firebase/analytics';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
@@ -74,8 +75,9 @@ export default function Result(){
             setWeightedResults([])
         }
     }, [serviceType, searchInput])
-    const handleReject = () => {
+    const handleReject = async () => {
         console.log('rejection handler')
+        await analytics().logEvent('result_skip', {userid:user?.id})
         setShowCard(false)
         setResultIdx(x => x+1)
     }

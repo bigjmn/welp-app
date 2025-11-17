@@ -1,3 +1,4 @@
+import analytics from "@react-native-firebase/analytics";
 import { usePrefs } from "./usePrefs";
 import { useUser } from "./useUser";
 const endpointMap:Record<ServiceType,string> = {
@@ -39,8 +40,9 @@ export const useWelpSearch = () => {
 
     const { catString } = usePrefs()
 
+
     const headers:Record<string, string> = {"accept": "application/json", "authorization": "Bearer "+apiKey};
-    const { usingCurrLocation, location, searchLocation, usingNow, searchTime } = useUser()
+    const { usingCurrLocation, location, searchLocation, usingNow, searchTime, user } = useUser()
 
 
 
@@ -59,6 +61,7 @@ export const useWelpSearch = () => {
                 throw Error("Something bad happened!")
             }
             const responseOb = await response.json()
+            await analytics().logEvent('yelp_api_call', {userid:user?.id, searchEndpoint:searchEndpoint})
             const resultList:ResultData[] = responseOb["businesses"].map((b:Record<string,any>) => {
                 const resultOb:ResultData = {
                     id: b["id"],
@@ -87,6 +90,7 @@ export const useWelpSearch = () => {
             let errMessage = "could not search!"
             if (e instanceof Error) {
                 errMessage = e.message 
+                await analytics().logEvent('search_error', {userid: user?.id, errMessage:errMessage})
             }
             return { resultList: null, errMessage }
             
