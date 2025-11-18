@@ -39,16 +39,6 @@ export default function OpenUberButton({result}:ResultCardProps){
         </Pressable>
     )
 
-    // return (
-    //     <TouchableOpacity onPress={getUber} style={{ display:"flex", flexDirection:"row", padding:4, alignItems:"center"}}>
-    //         {/* <Text style={{color:textColor}}>Open </Text> */}
-            
-    //         <Image source={uberButtonBlack} contentFit='contain' style={{width:"100%", height:40}} />
-    //     </TouchableOpacity>
-    // )
+    
 }
 
-    // const pickupLat = 40.71224398712733
-    // const pickupLng = -73.95307549029094
-    // const dropoffLat = 40.67549009386981 
-    // const dropoffLng = -73.96095113262129
