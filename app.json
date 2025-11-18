@@ -28,7 +28,8 @@
         "expo-build-properties",
         {
           "ios": {
-            "use-frameworks": "static"
+            "useFrameworks": "static",
+            "forceStaticLinking": ["RNFBApp", "RNFBAuth", "RNFBFirestore"]
           }
         }
       ],

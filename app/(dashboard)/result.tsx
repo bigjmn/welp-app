@@ -110,12 +110,21 @@ export default function Result(){
                     <ButtonsColumn visible={showButtons} handleReject={handleReject} handleAccept={handleAccept} />
                     </>
                 ) : 
-                (<ThemedText>Nothing!</ThemedText>)}
+                (<NothingCard />)}
             
         </ThemedView>
     )
 
 
+}
+
+function NothingCard(){
+    return (
+        <ThemedView style={{alignItems:"center", gap:20}}>
+            <ThemedText variant="header">Nothing!</ThemedText>
+            <ThemedText>Try changing your preferences. or moving.</ThemedText>
+        </ThemedView>
+    )
 }
 
 

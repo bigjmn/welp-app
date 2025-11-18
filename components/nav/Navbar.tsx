@@ -16,7 +16,8 @@ export default function Navbar(){
             flexDirection: 'row',
             justifyContent:'space-between',
             alignItems:'center',
-            width:'100%'
+            width:'100%',
+            padding:10
         },
         routebuttonsholder: {
             display: 'flex',

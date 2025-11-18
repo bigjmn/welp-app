@@ -7,7 +7,7 @@ import { FlatList, Pressable, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Animated, { SharedValue, useAnimatedStyle } from "react-native-reanimated";
-import { ThemedText, ThemedView } from "../ui";
+import { Spacer, ThemedText, ThemedView } from "../ui";
 import EditReviewModal from "./EditReview";
 
 export default function OrderHistory(){
@@ -34,6 +34,7 @@ export default function OrderHistory(){
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemedView style={styles.container}>
                 {oidEditing && <EditReviewModal oid={oidEditing} closeModal={closeModal} />}
+                {orderHistory.length === 0 && <NoHistory />}
                 <FlatList
                     data={orderHistory}
                     keyExtractor={(item) => `${item.timestamp}`}
@@ -57,7 +58,22 @@ export default function OrderHistory(){
         </GestureHandlerRootView>
     )
 }
-
+function NoHistory(){
+    const {colors} = useTheme()
+    return (
+        <>
+        <Spacer height={50}/>
+        
+        <ThemedView style={{width:"80%", gap:15,alignItems:'center', alignSelf:"center", backgroundColor:colors.uiBackground, borderRadius:8, padding:16}}>
+            
+            <ThemedText>
+                No orders yet.
+            </ThemedText>
+            <ThemedText>Thanks for getting the app though I guess.</ThemedText>
+        </ThemedView>
+        </>
+    )
+}
 function HistoryTile({orderDetail, editsetter, onSwipeableRef}:{orderDetail:HistoryItem, editsetter:(oid:string)=>void, onSwipeableRef:(ref:any)=>void}){
     const timestring = formatTimestamp(orderDetail.timestamp)
     const { colors } = useTheme()

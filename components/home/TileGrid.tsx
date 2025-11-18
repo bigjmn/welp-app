@@ -1,7 +1,8 @@
+import { searchPlaceholders } from "@/constants/SearchExamples";
 import { useTheme } from "@/hooks/useTheme";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { LayoutChangeEvent, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
     Easing,
@@ -12,7 +13,6 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import { PrimaryButton, Spacer, ThemedText, ThemedTextInput, ThemedView } from "../ui";
-
 const SERVICES: ServiceType[] = ["Delivery", "Restaurant", "Bar", "Search"];
 
 // Service icons
@@ -37,9 +37,19 @@ export function TileGrid() {
     const [serviceType, setServiceType] = useState<ServiceType>("Delivery");
     const [searchInput, setSearchInput] = useState<string>("");
     const [layouts, setLayouts] = useState<Record<number, Layout>>({});
+    const [randomSearchExample, setRandomSearchExample] = useState<string>(searchPlaceholders[0])
+
+    const makeRandomExample = () => {
+        const ridx = Math.floor(Math.random()*searchPlaceholders.length)
+        setRandomSearchExample(searchPlaceholders[ridx])
+    }
 
     const router = useRouter();
     const { colors } = useTheme();
+
+    useEffect(() => {
+        console.log('homepage')
+    }, [])
 
     // Map services to indices
     const serviceIndex = SERVICES.indexOf(serviceType);
@@ -52,6 +62,31 @@ export function TileGrid() {
     // Index shared values
     const activeIdx = useSharedValue(serviceIndex);
     const prevIdx = useSharedValue(serviceIndex);
+
+    useFocusEffect(
+        useCallback(() => {
+            console.log('homepage focused')
+            setServiceType('Delivery')
+            setSearchInput("")
+
+            // Reset animation values to Delivery (index 0)
+            fill.forEach((f, i) => {
+                f.value = i === 0 ? 1 : 0;
+            });
+            topOpac.forEach((t, i) => {
+                t.value = i === 0 ? 1 : 0;
+            });
+            activeIdx.value = 0;
+            prevIdx.value = 0;
+            progress.value = 0;
+            blobOpacity.value = 0;
+
+            return () => {
+                console.log('leaving homepage')
+            }
+        }, [])
+
+    )
 
     // Direction & distance
     const dirX = useSharedValue(0);
@@ -145,7 +180,9 @@ export function TileGrid() {
     );
 
     const onPress = (i: number) => {
+        console.log('pressing',i)
         const currentIdx = SERVICES.indexOf(serviceType);
+        if (i !== currentIdx && i == 3) makeRandomExample()
         if (i !== currentIdx) triggerTransfer(i);
     };
 
@@ -337,13 +374,13 @@ export function TileGrid() {
                     <ThemedTextInput
                         value={searchInput}
                         onChangeText={setSearchInput}
-                        placeholder="What are you looking for?"
+                        placeholder={randomSearchExample}
                         placeholderTextColor={colors.iconColor}
                         style={styles.searchInput}
                     />
                 </ThemedView>
             ) : (
-                <Spacer height={45} />
+                <Spacer height={50} />
             )}
             <Spacer height={16} />
             <ThemedView style={styles.searchSection}>
@@ -408,5 +445,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlignVertical: 'center',
         borderRadius: 16,
+        borderColor: "#A78BFA"
+
     }
 })

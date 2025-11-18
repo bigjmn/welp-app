@@ -1,9 +1,12 @@
 import FinderOptions from '@/components/home/FinderOptions';
 import { TileGrid } from '@/components/home/TileGrid';
 import { Spacer, ThemedLogo, ThemedText, ThemedView } from '@/components/ui';
+import { useEffect } from 'react';
 import { StyleSheet } from "react-native";
-
 export default function Index() {
+  useEffect(() => {
+        console.log('homescreen')
+    }, [])
   
   return (
     <ThemedView style={styles.container}>
