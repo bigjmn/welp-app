@@ -109,13 +109,13 @@ function HistoryTile({orderDetail, editsetter, onSwipeableRef}:{orderDetail:Hist
                     <Ionicons name="create-outline" size={20} color="white" />
                     <ThemedText style={styles.actionText}>Edit</ThemedText>
                 </Pressable>
-                <Pressable
+                {/* <Pressable
                     style={[styles.actionButton, { backgroundColor: '#EF4444' }]}
                     onPress={handleNeverShow}
                 >
                     <Ionicons name="eye-off-outline" size={20} color="white" />
                     <ThemedText style={styles.actionText}>Hide</ThemedText>
-                </Pressable>
+                </Pressable> */}
             </Animated.View>
         );
     };
