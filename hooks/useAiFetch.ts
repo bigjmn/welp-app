@@ -1,7 +1,7 @@
+import { yapi } from '@/constants/apitest';
 import { useState } from 'react';
-
 export const useAiFetch = () => {
-    const SUGGESTION_ENDPOINT = "https://api.yelp.com/ai/chat/v2"
+    const SUGGESTION_ENDPOINT = yapi
     
     const apiKey = process.env.EXPO_PUBLIC_YELP_API
     

@@ -1,0 +1,3 @@
+export const yapi="Jp4bwEQIE2AE0Ja0HHXBbnjhrjMF7b0rVczcj1BVt2Iri4L1fLRzirLGicnyqbLPlfo0M4fsW9G7qq5SbnQNWr8V0XN46WuY_fhVLMRP2TfhUwsscFb1VFeDKa7CYXYx"
+export const ucapi="ExTzFJtZLm7KRJm3X1v2Wm4XIlJ3DBHD"
+export const papi="AIzaSyAxR8PtmkqEcpCrwSGr-AESqQFhbprCPTI"

@@ -1,11 +1,10 @@
+import { papi } from '@/constants/apitest';
 import { useTheme } from '@/hooks/useTheme';
 import { useUser } from '@/hooks/useUser';
 import { useEffect, useState } from 'react';
 import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from 'react-native-google-places-textinput';
 import { ThemedView } from '../ui';
-
 const AddressSearch = () => {
-    const placesApi = process.env.EXPO_PUBLIC_PLACES_API
     const [inputState, setInputState] = useState('')
     const { colors, theme } = useTheme()
     const { searchLocation, handleSearchLocation, usingCurrLocation } = useUser()
@@ -113,12 +112,12 @@ const AddressSearch = () => {
         }
     };
 
-  return !placesApi ? null : (
+  return (
     
     <ThemedView style={{backgroundColor:'transparent'}}>
        
     <GooglePlacesTextInput
-      apiKey={placesApi}
+      apiKey={papi}
       onPlaceSelect={handlePlaceSelect}
       placeHolderText='Search'
       value={inputState}

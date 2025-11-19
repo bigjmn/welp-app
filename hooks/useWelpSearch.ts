@@ -1,3 +1,4 @@
+import { yapi } from "@/constants/apitest";
 import analytics from "@react-native-firebase/analytics";
 import { usePrefs } from "./usePrefs";
 import { useUser } from "./useUser";
@@ -36,7 +37,7 @@ const createSearch = (serviceType:ServiceType, latitude:number, longitude:number
 const SUGGESTION_ENDPOINT = "https://api.yelp.com/ai/chat/v2"
 
 export const useWelpSearch = () => {
-    const apiKey = process.env.EXPO_PUBLIC_YELP_API
+    const apiKey = yapi
 
     const { catString } = usePrefs()
 

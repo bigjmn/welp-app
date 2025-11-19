@@ -1,3 +1,4 @@
+import { ucapi } from '@/constants/apitest';
 import { useTheme } from '@/hooks/useTheme';
 import { useUser } from '@/hooks/useUser';
 import analytics from '@react-native-firebase/analytics';
@@ -16,7 +17,7 @@ export default function OpenUberButton({result}:ResultCardProps){
 
     
 
-    const clientId = process.env.EXPO_PUBLIC_UBER_CLIENT
+    const clientId = ucapi
     const url = `uber://?action=setPickup&pickup=my_location&dropoff[latitude]=${latitude}&dropoff[longitude]=${longitude}&dropoff[nickname]=${name}&client_id=${clientId}`;
 
 
