@@ -1,9 +1,10 @@
 import { searchPlaceholders } from "@/constants/SearchExamples";
 import { useTheme } from "@/hooks/useTheme";
+import { useUser } from "@/hooks/useUser";
 import { Image } from "expo-image";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { LayoutChangeEvent, Pressable, StyleSheet, View } from "react-native";
+import { Dimensions, LayoutChangeEvent, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
     Easing,
     useAnimatedStyle,
@@ -13,6 +14,7 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import { PrimaryButton, Spacer, ThemedText, ThemedTextInput, ThemedView } from "../ui";
+
 const SERVICES: ServiceType[] = ["Delivery", "Restaurant", "Bar", "Search"];
 
 // Service icons
@@ -27,8 +29,11 @@ const deliverygray = require("@/assets/service_icons/deliverygray.png");
 
 type Layout = { x: number; y: number; width: number; height: number; cx: number; cy: number };
 
-const CELL = 110;
+// Responsive constants based on 80% container width
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const CONTAINER_WIDTH = SCREEN_WIDTH * 0.8;
 const GAP = 10;
+const CELL = (CONTAINER_WIDTH - GAP) / 2; // Two cells per row with one gap
 const DURATION = 260;
 const FILL_INSET = 2;
 const FILL_SIZE = CELL - FILL_INSET * 2;
@@ -38,6 +43,11 @@ export function TileGrid() {
     const [searchInput, setSearchInput] = useState<string>("");
     const [layouts, setLayouts] = useState<Record<number, Layout>>({});
     const [randomSearchExample, setRandomSearchExample] = useState<string>(searchPlaceholders[0])
+
+    const { usingCurrLocation, searchLocation } = useUser();
+    
+        // Disable button if not using current location and no search location is set
+    const isDisabled = !usingCurrLocation && !searchLocation;
 
     const makeRandomExample = () => {
         const ridx = Math.floor(Math.random()*searchPlaceholders.length)
@@ -377,6 +387,8 @@ export function TileGrid() {
                         placeholder={randomSearchExample}
                         placeholderTextColor={colors.iconColor}
                         style={styles.searchInput}
+                        blurOnSubmit={true}
+                        returnKeyType="done"
                     />
                 </ThemedView>
             ) : (
@@ -384,7 +396,7 @@ export function TileGrid() {
             )}
             <Spacer height={16} />
             <ThemedView style={styles.searchSection}>
-            <PrimaryButton style={{ width: "80%" }} name="Let's Go!" onPress={goToResults} />
+            <PrimaryButton disabled={isDisabled} style={{ width: "80%", opacity: isDisabled ? .5 : 1 }} name="Let's Go!" onPress={goToResults} />
             </ThemedView>
         </ThemedView>
     );

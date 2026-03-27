@@ -1,5 +1,6 @@
 import { createCatString, createPrefDict } from '@/utils/preferencemaker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 import React, { createContext, useEffect, useState } from "react";
 interface PrefProps {
     foodPrefs:Record<string,boolean>;
@@ -43,8 +44,10 @@ export function PrefsProvider({children}: {children:React.ReactNode}){
     }
 
     const savePrefs = async () => {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         await AsyncStorage.setItem('prefs',JSON.stringify({prefDict:foodPrefs, unseenPref:preferUnseen, cheapPref:preferCheap}))
         console.log("preferences saved!")
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     }
 
     useEffect(() => {

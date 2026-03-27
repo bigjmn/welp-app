@@ -2,6 +2,7 @@ import { PrimaryButton, ThemedButton, ThemedText, ThemedView } from "@/component
 import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from 'expo-haptics';
 import { useEffect, useState } from "react";
 import { Dimensions, Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -38,6 +39,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
         if (!oid || logPending || !reviewState){
             return
         }
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         const orderReview:Review = {rating:reviewState, addedComment:addedComment}
         setLogPending(true)
         setSaveSuccess(false)
@@ -49,6 +51,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
             console.log("save successful")
             setSaveSuccess(true)
             setLogPending(false)
+            await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
 
             // Close modal after brief delay to show success
             setTimeout(() => {
@@ -59,6 +62,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
             console.log(err)
             setLogPending(false)
             setSaveSuccess(false)
+            await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         }
     }
 
@@ -66,6 +70,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
 
     return (
         <Modal transparent={true} visible={oid !== null} animationType="slide">
+
         <ThemedView style={styles.container}>
         <ThemedView style={[styles.content]}>
             <View style={{width:"90%"}}>
@@ -99,6 +104,8 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
                 value={addedComment}
                 placeholder="Optional, but helps the AI learn your preferences"
                 placeholderTextColor={colors.iconColor}
+                blurOnSubmit={true}
+                returnKeyType="done"
              />
              </View>
              <View style={{width:"90%"}}>
@@ -119,6 +126,7 @@ export default function EditReviewModal({oid, closeModal}:{oid:string, closeModa
 
         </ThemedView>
         </ThemedView>
+
         </Modal>
     )
 

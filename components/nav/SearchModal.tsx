@@ -1,5 +1,5 @@
 import { useUser } from "@/hooks/useUser";
-import { Dimensions, Modal, StyleSheet } from "react-native";
+import { Dimensions, Keyboard, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { PrimaryButton, ThemedText, ThemedView } from "../ui";
 import SearchDetailForm from "./SearchDetailForm";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -16,7 +16,9 @@ export default function SearchModal({ isOpen, handleClose }: SearchModalProps) {
     const isDisabled = !usingCurrLocation && !searchLocation;
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Modal transparent={true} visible={isOpen} animationType="fade">
+            
             <ThemedView style={styles.overlay}>
                 <ThemedView style={styles.modalView}>
                     <ThemedView style={styles.header}>
@@ -37,7 +39,9 @@ export default function SearchModal({ isOpen, handleClose }: SearchModalProps) {
                     </ThemedView>
                 </ThemedView>
             </ThemedView>
+            
         </Modal>
+        </TouchableWithoutFeedback>
     );
 }
 

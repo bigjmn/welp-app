@@ -6,7 +6,7 @@ import AddressSearch from "../home/AddressSearch";
 import { Spacer, ThemedText, ThemedView } from "../ui";
 
 export default function SearchDetailForm() {
-    const { usingCurrLocation, handleUsingCurrLocation, usingNow, handleUsingNow, searchTime, handleSearchTime } = useUser()
+    const { usingCurrLocation, locationPermissionPending, handleUsingCurrLocation, usingNow, handleUsingNow, searchTime, handleSearchTime } = useUser()
     const { theme, colors } = useTheme()
 
     const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
@@ -22,7 +22,24 @@ export default function SearchDetailForm() {
         <ThemedView style={styles.container}>
             {/* Location Section */}
             <ThemedView style={styles.section}>
-                <ThemedText style={styles.sectionTitle}>Location</ThemedText>
+                <ThemedView style={styles.sectionHeader}>
+                    <ThemedText style={styles.sectionTitle}>Location</ThemedText>
+                    <ThemedView style={styles.toggleContainer}>
+                        <ThemedText style={[
+                            styles.toggleLabel,
+                            usingCurrLocation && { color: colors.primary, fontWeight: '600' }
+                        ]}>
+                            Use Current
+                        </ThemedText>
+                        <Switch
+                            onValueChange={handleUsingCurrLocation}
+                            value={usingCurrLocation}
+                            disabled={locationPermissionPending}
+                            trackColor={{ false: colors.iconColor, true: colors.primary }}
+                            thumbColor={usingCurrLocation ? '#FFFFFF' : '#F3F4F6'}
+                        />
+                    </ThemedView>
+                </ThemedView>
                 <Spacer height={12} />
 
                 <ThemedView style={styles.fieldTile}>
@@ -36,23 +53,6 @@ export default function SearchDetailForm() {
                         <Spacer height={8} />
                         <AddressSearch />
                     </ThemedView>
-
-                    <ThemedView style={styles.toggleWrapper}>
-                        <ThemedView style={styles.toggleContainer}>
-                            <ThemedText style={[
-                                styles.toggleLabel,
-                                usingCurrLocation && { color: colors.primary, fontWeight: '600' }
-                            ]}>
-                                Use Current
-                            </ThemedText>
-                            <Switch
-                                onValueChange={handleUsingCurrLocation}
-                                value={usingCurrLocation}
-                                trackColor={{ false: colors.iconColor, true: colors.primary }}
-                                thumbColor={usingCurrLocation ? '#FFFFFF' : '#F3F4F6'}
-                            />
-                        </ThemedView>
-                    </ThemedView>
                 </ThemedView>
             </ThemedView>
 
@@ -60,7 +60,23 @@ export default function SearchDetailForm() {
 
             {/* Time Section */}
             <ThemedView style={styles.section}>
-                <ThemedText style={styles.sectionTitle}>Time</ThemedText>
+                <ThemedView style={styles.sectionHeader}>
+                    <ThemedText style={styles.sectionTitle}>Time</ThemedText>
+                    <ThemedView style={styles.toggleContainer}>
+                        <ThemedText style={[
+                            styles.toggleLabel,
+                            usingNow && { color: colors.primary, fontWeight: '600' }
+                        ]}>
+                            Use Now
+                        </ThemedText>
+                        <Switch
+                            value={usingNow}
+                            onChange={handleUsingNow}
+                            trackColor={{ false: colors.iconColor, true: colors.primary }}
+                            thumbColor={usingNow ? '#FFFFFF' : '#F3F4F6'}
+                        />
+                    </ThemedView>
+                </ThemedView>
                 <Spacer height={12} />
 
                 <ThemedView style={styles.fieldTile}>
@@ -85,24 +101,6 @@ export default function SearchDetailForm() {
                             />
                         </ThemedView>
                     </ThemedView>
-
-                    <ThemedView style={styles.toggleWrapper}>
-                        <ThemedView style={styles.toggleContainer}>
-                            <ThemedText style={[
-                                styles.toggleLabel,
-                                usingNow && { color: colors.primary, fontWeight: '600' }
-                            ]}>
-                                Use Now
-                            </ThemedText>
-                            <Switch
-                                style={{ alignSelf: "flex-end" }}
-                                value={usingNow}
-                                onChange={handleUsingNow}
-                                trackColor={{ false: colors.iconColor, true: colors.primary }}
-                                thumbColor={usingNow ? '#FFFFFF' : '#F3F4F6'}
-                            />
-                        </ThemedView>
-                    </ThemedView>
                 </ThemedView>
             </ThemedView>
         </ThemedView>
@@ -116,10 +114,15 @@ const styles = StyleSheet.create({
     section: {
         width: '100%',
     },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+    },
     sectionTitle: {
         fontSize: 18,
         fontWeight: '700',
-        marginBottom: 4,
     },
     fieldTile: {
         flexDirection: 'column',
@@ -132,11 +135,6 @@ const styles = StyleSheet.create({
     fieldLabel: {
         fontSize: 14,
         fontWeight: '500',
-    },
-    toggleWrapper: {
-        width: '100%',
-        alignItems: 'flex-end',
-        paddingTop: 8,
     },
     toggleContainer: {
         flexDirection: 'row',

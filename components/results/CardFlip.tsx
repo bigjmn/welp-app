@@ -35,7 +35,7 @@ const RegularContent = ({result}:ResultCardProps) => {
         ))}
       </ThemedView>
       </ThemedView>
-      <ThemedText variant='italicStyle'>(flip for details)</ThemedText>
+      <ThemedText variant='italic'>(flip for details)</ThemedText>
     </ThemedView>
   );
 };

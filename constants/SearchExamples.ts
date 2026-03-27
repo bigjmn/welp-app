@@ -14,8 +14,9 @@ const searchPlaceholders:string[] = [
     'e.g. "reverse escape room"',
     'e.g. "super rare books"',
     'e.g. "DIY tattoos"',
-    'e.g. "art museum only paintings"',
-    'e.g. "barbershop with quaret"'
+    'e.g. "outdoor disco"',
+    'e.g. "barbershop with quaret"',
+    'e.g. "treasure hunting real"'
 
 ]
 export { searchPlaceholders }

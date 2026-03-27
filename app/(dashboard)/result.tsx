@@ -7,7 +7,7 @@ import { useUser } from "@/hooks/useUser";
 import { useWelpSearch } from "@/hooks/useWelpSearch";
 import { shufflePrefs } from "@/utils/randomizers";
 import analytics from '@react-native-firebase/analytics';
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import Animated, {
@@ -25,6 +25,7 @@ export default function Result(){
     const [weightedResults, setWeightedResults] = useState<ResultData[]|null>(null)
     const [resultIdx, setResultIdx] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
+    const [searchTrigger, setSearchTrigger] = useState(0)
     const { serviceType, searchInput }:{serviceType:ServiceType,searchInput:string} = useLocalSearchParams()
     const { getResults } = useWelpSearch()
     const { user } = useUser()
@@ -40,11 +41,19 @@ export default function Result(){
     }, []);
     const goToReview = () => {}
 
+    // Trigger a new search whenever the screen comes into focus
+    useFocusEffect(
+        useCallback(() => {
+            console.log('result screen focused, triggering new search')
+            setSearchTrigger(prev => prev + 1)
+        }, [])
+    )
+
     useEffect(() => {
         console.log(serviceType)
     }, [serviceType])
 
-  
+
 
     useEffect(() => {
         if (!user){
@@ -52,10 +61,11 @@ export default function Result(){
         }
         setIsLoading(true)
         setShowCard(false)
+        setResultIdx(0) // Reset result index on new search
         if (weightedResults && weightedResults.length>0){
             console.log(weightedResults.length)
             console.log(resultIdx)
-            
+
         }
         const {orderHistory} = user
         getResults(serviceType, searchInput)
@@ -74,7 +84,7 @@ export default function Result(){
             console.log('leaving')
             setWeightedResults([])
         }
-    }, [serviceType, searchInput])
+    }, [serviceType, searchInput, searchTrigger])
     const handleReject = async () => {
         console.log('rejection handler')
         await analytics().logEvent('result_skip', {userid:user?.id})

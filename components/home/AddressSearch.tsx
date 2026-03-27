@@ -56,7 +56,7 @@ const AddressSearch = () => {
             borderWidth: 1,
             borderColor: usingCurrLocation ? colors.iconColor : colors.primary,
             borderRadius: 8,
-            width: 170,
+            width: '100%',
             paddingHorizontal: 12,
             paddingVertical: 12,
             pointerEvents: usingCurrLocation ? "none" : "auto",

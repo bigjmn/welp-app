@@ -2,6 +2,7 @@ import { PrimaryButton, ThemedButton, ThemedText, ThemedView } from "@/component
 import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
@@ -23,6 +24,7 @@ export default function ReviewScreen(){
         if (!orderTime || !id || logPending || !reviewState){
             return
         }
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         const orderReview:Review = {rating:reviewState, addedComment:addedComment}
         setLogPending(true)
         try {
@@ -31,10 +33,12 @@ export default function ReviewScreen(){
                 throw Error(errMessage)
             }
             setLogPending(false)
+            await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
             router.replace('/')
         } catch (e){
             console.log(e)
             setLogPending(false)
+            await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         }
     }
     const handleSkip = async () => {
@@ -98,6 +102,8 @@ export default function ReviewScreen(){
                 value={addedComment}
                 placeholder="Optional, but helps the AI learn your preferences"
                 placeholderTextColor={colors.iconColor}
+                blurOnSubmit={true}
+                returnKeyType="done"
              />
              </View>
              <View style={{width:"90%"}}>

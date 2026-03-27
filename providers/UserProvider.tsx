@@ -13,7 +13,8 @@ interface UserProps {
     searchLocation: PlaceDetailsFields | null,
     handleSearchLocation:(sl?:PlaceDetailsFields)=>void,
     usingCurrLocation:boolean,
-    handleUsingCurrLocation:()=>void, 
+    locationPermissionPending:boolean,
+    handleUsingCurrLocation:()=>void,
     usingNow:boolean,
     handleUsingNow:()=>void,
     searchTime:Date|null,
@@ -21,7 +22,7 @@ interface UserProps {
 
 }
 
-export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:async()=>({errMessage:null}),modifyHistory:async()=>({errMessage:null}), searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
+export const UserContext = createContext<UserProps>({location:null, errorMsg:null, user: null, logHistory:async()=>({errMessage:null}),modifyHistory:async()=>({errMessage:null}), searchLocation:null,handleSearchLocation:()=>{},usingCurrLocation:true,locationPermissionPending:false,handleUsingCurrLocation:()=>{},usingNow:true,handleUsingNow:()=>{},searchTime:null,handleSearchTime:()=>[] })
 
 export function UserProvider({ children } : {children : React.ReactNode}){
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -29,6 +30,7 @@ export function UserProvider({ children } : {children : React.ReactNode}){
     const [user, setUser] = useState<User | null>(null)
     const [searchLocation, setSearchLocation] = useState<PlaceDetailsFields | null>(null);
     const [usingCurrLocation, setUsingCurrLocation] = useState(true)
+    const [locationPermissionPending, setLocationPermissionPending] = useState(false)
     const [usingNow, setUsingNow] = useState(true)
     const [searchTime, setSearchTime] = useState<Date|null>(null)
 
@@ -44,9 +46,64 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       setUsingNow(x => !x)
     }
     const handleUsingCurrLocation = () => {
-      console.log(usingCurrLocation)
-      setUsingCurrLocation(x => !x)
+      console.log('handleUsingCurrLocation called, current state:', usingCurrLocation)
 
+      // The Switch passes the NEW desired value, but we're reading the OLD state
+      // So if switch is currently OFF (false) and user taps it, they want it ON
+      // If switch is currently ON (true) and user taps it, they want it OFF
+
+      // If currently using location, user wants to toggle it OFF (synchronous)
+      if (usingCurrLocation) {
+        console.log('Disabling current location')
+        setUsingCurrLocation(false)
+        return
+      }
+
+      // If NOT currently using location, user wants to toggle it ON
+      // Start async permission flow - don't wait for it
+      console.log('Enabling current location - requesting permissions')
+      ;(async () => {
+        // Set pending state to disable switch during permission request
+        setLocationPermissionPending(true)
+
+        try {
+          // Check/request permissions
+          console.log('Checking location permissions...')
+          let { status } = await Location.getForegroundPermissionsAsync()
+          console.log('Current permission status:', status)
+
+          // If not granted, request permission
+          if (status !== 'granted') {
+            console.log('Requesting location permission...')
+            const permissionResult = await Location.requestForegroundPermissionsAsync()
+            status = permissionResult.status
+            console.log('Permission request result:', status)
+          }
+
+          // Only enable if permission granted
+          if (status === 'granted') {
+            console.log('Permission granted, enabling current location')
+            setUsingCurrLocation(true)
+            setErrorMsg(null)
+
+            // Get current location
+            try {
+              const currentLocation = await Location.getCurrentPositionAsync({})
+              setLocation(currentLocation)
+              console.log('Got current location')
+            } catch (err) {
+              console.log('Error getting location:', err)
+            }
+          } else {
+            console.log('Permission denied')
+            setErrorMsg('Permission to access location was denied')
+            setUsingCurrLocation(false)
+          }
+        } finally {
+          // Clear pending state when done
+          setLocationPermissionPending(false)
+        }
+      })()
     }
     const handleSearchTime = (newdate:Date) => {
       setSearchTime(newdate)
@@ -109,14 +166,18 @@ export function UserProvider({ children } : {children : React.ReactNode}){
 
      useEffect(() => {
         (async () => {
-          let { status } = await Location.requestForegroundPermissionsAsync();
+          // Don't request permission on startup - just check if we already have it
+          let { status } = await Location.getForegroundPermissionsAsync();
           if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
+            // Don't have permission yet - user can enable it via the switch
+            setUsingCurrLocation(false);
             return;
           }
 
+          // We have permission - get current location
           let currentLocation = await Location.getCurrentPositionAsync({});
           setLocation(currentLocation);
+          setUsingCurrLocation(true);
         })();
       }, []);
       useEffect(() => {
@@ -141,7 +202,7 @@ export function UserProvider({ children } : {children : React.ReactNode}){
       }, [])
 
       return (
-        <UserContext.Provider value={{ location, errorMsg, user, logHistory, modifyHistory, searchLocation,handleSearchLocation, usingCurrLocation,handleUsingCurrLocation,usingNow,handleUsingNow, searchTime, handleSearchTime }}>
+        <UserContext.Provider value={{ location, errorMsg, user, logHistory, modifyHistory, searchLocation,handleSearchLocation, usingCurrLocation,locationPermissionPending,handleUsingCurrLocation,usingNow,handleUsingNow, searchTime, handleSearchTime }}>
             { children }
         </UserContext.Provider>
       )

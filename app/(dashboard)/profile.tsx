@@ -3,6 +3,7 @@ import PreferenceBoxes from "@/components/profile/PreferenceBoxes";
 import SliderZone from "@/components/profile/SliderZone";
 import { DividingLine, PrimaryButton, Spacer, ThemedView, UnderlinedButton } from "@/components/ui";
 import { usePrefs } from "@/hooks/usePrefs";
+import { useTheme } from "@/hooks/useTheme";
 import { useState } from 'react';
 import { StyleSheet } from "react-native";
 type ProfileTab = "preferences"|"history"
@@ -31,6 +32,17 @@ export default function Profile(){
 
 function PreferenceSecion(){
     const { preferUnseen, updatePreferUnseen, savePrefs } = usePrefs()
+    const { colors } = useTheme()
+    const [saveSuccess, setSaveSuccess] = useState(false)
+
+    const handleSavePrefs = async () => {
+        await savePrefs()
+        setSaveSuccess(true)
+        setTimeout(() => {
+            setSaveSuccess(false)
+        }, 1000)
+    }
+
     return (
         <ThemedView style={styles.preferencesHolder}>
             <Spacer height={5} />
@@ -38,7 +50,7 @@ function PreferenceSecion(){
             <DividingLine />
             <Spacer height={20} />
             {/* <ThemedView style={styles.unseenSwitch}>
-                <Switch 
+                <Switch
                     value={preferUnseen}
                     onValueChange={updatePreferUnseen}
                     trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -47,8 +59,12 @@ function PreferenceSecion(){
                     <ThemedText>Prefer Unseen</ThemedText>
             </ThemedView> */}
             <SliderZone />
-            
-            <PrimaryButton style={{width:"80%", alignSelf:"center"}} name="save preferences" onPress={savePrefs} />
+
+            <PrimaryButton
+                style={{width:"80%", alignSelf:"center", backgroundColor: saveSuccess ? '#22C55E' : colors.primary}}
+                name={saveSuccess ? "Saved!" : "Save preferences"}
+                onPress={handleSavePrefs}
+            />
             {/* <Spacer height={5} /> */}
         </ThemedView>
     )

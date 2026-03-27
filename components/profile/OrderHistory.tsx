@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderRadius: 8,
         gap: 2,
-        width: 120,
+        width: 252,
         height: 64
     },
     actionText: {
